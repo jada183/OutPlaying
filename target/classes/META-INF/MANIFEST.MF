@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: OutPlayingBack
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: jason.francoquintero
+Implementation-Vendor-Id: BackOutPlaying
+Build-Jdk: 1.8.0_171
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/OutPlayingFull/OutPlayingBack
+Created-By: Maven Integration for Eclipse
+
