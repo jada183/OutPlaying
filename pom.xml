@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>OutPlaying</groupId>
-  		<artifactId>OutPlayingFull</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
+		<artifactId>OutPlayingFull</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>BackOutPlaying</groupId>
 	<artifactId>OutPlayingBack</artifactId>
@@ -42,12 +43,13 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- 
 		<dependency>
-		  <groupId>OutPlaying</groupId>
-		  <artifactId>frontend</artifactId>
-		  <version>0.0.1-SNAPSHOT</version>
-  		  <scope>runtime</scope>
+			<groupId>OutPlaying</groupId>
+			<artifactId>frontend</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		 -->
 		<dependency>
 			<groupId>org.modelmapper</groupId>
 			<artifactId>modelmapper</artifactId>
@@ -56,7 +58,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
 
@@ -67,46 +68,48 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
-         <groupId>org.apache.maven.plugins</groupId>
-         <artifactId>maven-failsafe-plugin</artifactId>
-         
-      </plugin>
-      <plugin>
-         <groupId>org.apache.maven.plugins</groupId>
-         <artifactId>maven-surefire-plugin</artifactId>
-      </plugin>
-      <plugin>
-         <groupId>org.springframework.boot</groupId>
-         <artifactId>spring-boot-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
-         <groupId>org.apache.maven.plugins</groupId>
-         <artifactId>maven-war-plugin</artifactId>
-         <configuration>
-            <packagingExcludes>WEB-INF/lib/tomcat-*.jar</packagingExcludes>
-            <warName>tutorial-app</warName>
-         </configuration>
-      </plugin>
-      <plugin>
-         <artifactId>maven-resources-plugin</artifactId>    
-          <executions>
-            <execution>
-               <id>copy-resources</id>
-               <phase>validate</phase>
-               <goals>
-                  <goal>copy-resources</goal>
-               </goals>
-               <configuration>
-                  <outputDirectory>${project.build.directory}/classes/resources/</outputDirectory>
-                  <resources>
-                     <resource>
-                        <directory>${project.parent.basedir}/frontend/src/main/web/dist/frontendApp/</directory>
-                     </resource>
-                  </resources>
-               </configuration>
-            </execution>
-         </executions>
-      </plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<packagingExcludes>WEB-INF/lib/tomcat-*.jar</packagingExcludes>
+					<warName>OUtplaying-app</warName>
+				</configuration>
+			</plugin>
+			<!-- 
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/classes/resources/</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.parent.basedir}/frontend/src/main/web/OutPlaying/dist/frontendApp/</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			 -->
 		</plugins>
 	</build>
 
