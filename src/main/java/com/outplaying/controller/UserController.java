@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.outplaying.dto.UserDTO;
-import com.outplaying.model.User;
 import com.outplaying.service.IUserService;
 
 @RestController

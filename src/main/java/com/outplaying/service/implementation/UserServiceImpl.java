@@ -2,7 +2,6 @@ package com.outplaying.service.implementation;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,6 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public UserDTO findUserById(Long idUser) {
-		// cambiar mapeador
 
 		return modelMapper.map(userRepository.getOne(idUser), UserDTO.class);
 	}
@@ -45,7 +43,7 @@ public class UserServiceImpl implements IUserService {
 
 		List<UserDTO> listUsers = new ArrayList<UserDTO>();
 		List<User> usersBack = new ArrayList<User>();
-		usersBack = (List<User>) this.userRepository.findAll();
+		usersBack = this.userRepository.findAll();
 		for (User user : usersBack) {
 			listUsers.add(this.modelMapper.map(user, UserDTO.class));
 		}
@@ -59,9 +57,9 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public Integer deleteById(Long idUser) {
-		if (idUser != null)
-			return userRepository.removeByIdUser(idUser);
+	public Integer deleteById(Long idCredential) {
+		if (idCredential != null)
+			return userRepository.removeByIdUser(idCredential);
 
 		return -1;
 	}
