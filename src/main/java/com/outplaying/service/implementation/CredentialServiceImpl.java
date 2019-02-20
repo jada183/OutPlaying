@@ -37,10 +37,12 @@ public class CredentialServiceImpl implements ICredentialService {
 		List<Credential> credentialList = new ArrayList<Credential>();
 		credentialList = credentialRepository.findAll();
 		System.out.println(credentialList.get(0).getUsername());
+
 		for (Credential credential : credentialList) {
 			listCredentialDTO.add(modelMapper.map(credential, CredentialDTO.class));
 		}
 		return listCredentialDTO;
+
 	}
 
 	@Override

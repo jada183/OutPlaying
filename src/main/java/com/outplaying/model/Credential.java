@@ -24,7 +24,7 @@ public class Credential {
 	@Column(name = "password", length = 255, nullable = false)
 	private String password;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne
 	private User user;
 
 	public Long getIdCredential() {
