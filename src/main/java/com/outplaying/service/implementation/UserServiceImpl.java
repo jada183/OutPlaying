@@ -57,9 +57,9 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public Integer deleteById(Long idCredential) {
-		if (idCredential != null)
-			return userRepository.removeByIdUser(idCredential);
+	public Integer deleteById(Long idUser) {
+		if (idUser != null)
+			return userRepository.removeByIdUser(idUser);
 
 		return -1;
 	}

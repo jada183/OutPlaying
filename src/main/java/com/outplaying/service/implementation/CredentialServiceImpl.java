@@ -53,9 +53,11 @@ public class CredentialServiceImpl implements ICredentialService {
 	}
 
 	@Override
-	public Integer deleteById(Long idUser) {
-		// TODO Auto-generated method stub
-		return null;
+	public Integer deleteById(Long idCredential) {
+		if (idCredential != null)
+			return credentialRepository.removeByIdCredential(idCredential);
+
+		return -1;
 	}
 
 }
