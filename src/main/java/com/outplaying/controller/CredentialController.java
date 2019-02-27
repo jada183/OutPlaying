@@ -29,7 +29,7 @@ public class CredentialController {
 		return credentialService.addCredential(credentialDTO);
 	}
 
-	@GetMapping(value = "", produces = "application/json")
+	@GetMapping(value = "")
 	public List<CredentialDTO> getAll() {
 		return credentialService.getAll();
 	}
