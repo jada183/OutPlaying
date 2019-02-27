@@ -35,14 +35,14 @@ public class User {
 	@Column(name = "role", length = 45, nullable = false)
 	private String role;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private List<Post> userPost = new ArrayList<>();
+//	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "user")
+//	private List<Post> userPost = new ArrayList<>();
 
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "user")
 	private Credential credential;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private List<Comment> userComments = new ArrayList<>();
+//	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "user")
+//	private List<Comment> userComments = new ArrayList<>();
 
 	public Long getIdUser() {
 		return idUser;
@@ -84,21 +84,21 @@ public class User {
 		this.credential = credential;
 	}
 
-	public List<Post> getUserPost() {
-		return userPost;
-	}
-
-	public void setUserPost(List<Post> userPost) {
-		this.userPost = userPost;
-	}
-
-	public List<Comment> getUserComments() {
-		return userComments;
-	}
-
-	public void setUserComments(List<Comment> userComments) {
-		this.userComments = userComments;
-	}
+//	public List<Post> getUserPost() {
+//		return userPost;
+//	}
+//
+//	public void setUserPost(List<Post> userPost) {
+//		this.userPost = userPost;
+//	}
+//
+//	public List<Comment> getUserComments() {
+//		return userComments;
+//	}
+//
+//	public void setUserComments(List<Comment> userComments) {
+//		this.userComments = userComments;
+//	}
 
 	public String getRole() {
 		return role;

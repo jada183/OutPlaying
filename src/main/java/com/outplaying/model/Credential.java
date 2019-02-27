@@ -15,7 +15,7 @@ import javax.persistence.Table;
 public class Credential {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id_user_credential")
+	@Column(name = "id_user_credential", length = 20)
 	private Long idCredential;
 
 	@Column(name = "username", unique = true, length = 45, nullable = false)

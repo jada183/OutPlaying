@@ -5,19 +5,34 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.outplaying.dto.CredentialDTO;
 import com.outplaying.model.Credential;
 import com.outplaying.repository.ICredentialRepository;
 import com.outplaying.service.ICredentialService;
+import static java.util.Collections.emptyList;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @Service
-public class CredentialServiceImpl implements ICredentialService {
+public class CredentialServiceImpl implements ICredentialService{
 
 	ModelMapper modelMapper = new ModelMapper();
+
 	@Autowired
 	private ICredentialRepository credentialRepository;
+
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+	public CredentialServiceImpl(ICredentialRepository credentialRepository) {
+		this.credentialRepository = credentialRepository;
+	}
 
 	@Override
 	public CredentialDTO findCredentialById(Long idCredential) {
@@ -28,20 +43,20 @@ public class CredentialServiceImpl implements ICredentialService {
 	@Override
 	public CredentialDTO addCredential(CredentialDTO credentialDTO) {
 		Credential credential = modelMapper.map(credentialDTO, Credential.class);
+		credential.setPassword(bCryptPasswordEncoder.encode(credentialDTO.getPassword()));
 		return modelMapper.map(credentialRepository.save(credential), CredentialDTO.class);
 	}
 
 	@Override
-	public List<CredentialDTO> getAll() {
+	public List<Credential> getAll() {
 		List<CredentialDTO> listCredentialDTO = new ArrayList<CredentialDTO>();
 		List<Credential> credentialList = new ArrayList<Credential>();
 		credentialList = credentialRepository.findAll();
-		System.out.println(credentialList.get(0).getUsername());
-
-		for (Credential credential : credentialList) {
-			listCredentialDTO.add(modelMapper.map(credential, CredentialDTO.class));
-		}
-		return listCredentialDTO;
+//		for (Credential credential : credentialList) {
+//			listCredentialDTO.add(modelMapper.map(credential, CredentialDTO.class));
+//		}
+//		return listCredentialDTO;
+		return credentialList;
 
 	}
 
@@ -60,4 +75,12 @@ public class CredentialServiceImpl implements ICredentialService {
 		return -1;
 	}
 
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		Credential credential = credentialRepository.findByUsername(username);
+		if (credential == null) {
+			throw new UsernameNotFoundException(username);
+		}
+		return new User(credential.getUsername(), credential.getPassword(), emptyList());
+	}
 }

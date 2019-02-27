@@ -10,4 +10,6 @@ import com.outplaying.model.Credential;
 public interface ICredentialRepository extends JpaRepository<Credential,Long> {
 	@Transactional
 	public Integer removeByIdCredential(Long idCredential);
+	
+	public Credential findByUsername(String username);
 }

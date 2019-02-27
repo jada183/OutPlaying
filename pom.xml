@@ -43,13 +43,8 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- 
-		<dependency>
-			<groupId>OutPlaying</groupId>
-			<artifactId>frontend</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		 -->
+		<!-- <dependency> <groupId>OutPlaying</groupId> <artifactId>frontend</artifactId> 
+			<version>0.0.1-SNAPSHOT</version> </dependency> -->
 		<dependency>
 			<groupId>org.modelmapper</groupId>
 			<artifactId>modelmapper</artifactId>
@@ -59,6 +54,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>3.4.0</version>
+		</dependency>
+		
 	</dependencies>
 
 	<build>
@@ -88,28 +89,11 @@
 					<warName>OUtplaying-app</warName>
 				</configuration>
 			</plugin>
-			<!-- 
-			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copy-resources</id>
-						<phase>validate</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}/classes/resources/</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${project.parent.basedir}/frontend/src/main/web/OutPlaying/dist/frontendApp/</directory>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			 -->
+			<!-- <plugin> <artifactId>maven-resources-plugin</artifactId> <executions> 
+				<execution> <id>copy-resources</id> <phase>validate</phase> <goals> <goal>copy-resources</goal> 
+				</goals> <configuration> <outputDirectory>${project.build.directory}/classes/resources/</outputDirectory> 
+				<resources> <resource> <directory>${project.parent.basedir}/frontend/src/main/web/OutPlaying/dist/frontendApp/</directory> 
+				</resource> </resources> </configuration> </execution> </executions> </plugin> -->
 		</plugins>
 	</build>
 

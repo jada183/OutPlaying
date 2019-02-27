@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.outplaying.dto.CredentialDTO;
+import com.outplaying.model.Credential;
 import com.outplaying.service.ICredentialService;
 
 @RestController
@@ -21,16 +22,15 @@ import com.outplaying.service.ICredentialService;
 public class CredentialController {
 
 	@Autowired
-	private ICredentialService credentialService;
+	private ICredentialService credentialService; 
 
-	@PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/sign-up")
 	public CredentialDTO addCredential(@RequestBody CredentialDTO credentialDTO) {
-		System.out.println("punto de interrupcion" + credentialDTO.getUser().getIdUser());
 		return credentialService.addCredential(credentialDTO);
 	}
 
 	@GetMapping(value = "", produces = "application/json")
-	public List<CredentialDTO> getAll() {
+	public List<Credential> getAll() {
 		return credentialService.getAll();
 	}
 
