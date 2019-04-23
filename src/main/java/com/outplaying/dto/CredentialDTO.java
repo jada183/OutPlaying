@@ -9,8 +9,8 @@ public class CredentialDTO {
 	private String username;
 
 	private String password;
-
-	private User user;
+	
+	private Long idUser;
 
 	public Long getIdCredential() {
 		return idCredential;
@@ -36,12 +36,12 @@ public class CredentialDTO {
 		this.password = password;
 	}
 
-	public User getUser() {
-		return user;
+	public Long getIdUser() {
+		return idUser;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setIdUser(Long idUser) {
+		this.idUser = idUser;
 	}
 
 }

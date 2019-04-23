@@ -17,7 +17,7 @@ import com.outplaying.dto.UserDTO;
 import com.outplaying.service.IUserService;
 
 @RestController
-@RequestMapping("api/v1/user")
+@RequestMapping("api/v1/users")
 public class UserController {
 
 	@Autowired

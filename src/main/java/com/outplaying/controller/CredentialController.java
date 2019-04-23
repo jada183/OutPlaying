@@ -18,7 +18,7 @@ import com.outplaying.model.Credential;
 import com.outplaying.service.ICredentialService;
 
 @RestController
-@RequestMapping("api/v1/credential")
+@RequestMapping("api/v1/credentials")
 public class CredentialController {
 
 	@Autowired
@@ -30,7 +30,7 @@ public class CredentialController {
 	}
 
 	@GetMapping(value = "", produces = "application/json")
-	public List<Credential> getAll() {
+	public List<CredentialDTO> getAll() {
 		return credentialService.getAll();
 	}
 

@@ -11,5 +11,5 @@ public interface ICredentialRepository extends JpaRepository<Credential,Long> {
 	@Transactional
 	public Integer removeByIdCredential(Long idCredential);
 	
-	public Credential findByUsername(String username);
+	public Credential findByusername(String username);
 }

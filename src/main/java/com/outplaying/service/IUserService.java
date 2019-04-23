@@ -2,8 +2,10 @@ package com.outplaying.service;
 
 import java.util.List;
 
-import com.outplaying.dto.UserDTO;
+import org.springframework.stereotype.Service;
 
+import com.outplaying.dto.UserDTO;
+@Service
 public interface IUserService {
 
 	public UserDTO findUserById(Long idUser);

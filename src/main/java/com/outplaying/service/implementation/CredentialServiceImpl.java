@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,7 +22,7 @@ import static java.util.Collections.emptyList;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @Service
-public class CredentialServiceImpl implements ICredentialService{
+public class CredentialServiceImpl implements UserDetailsService, ICredentialService {
 
 	ModelMapper modelMapper = new ModelMapper();
 
@@ -43,20 +45,21 @@ public class CredentialServiceImpl implements ICredentialService{
 	@Override
 	public CredentialDTO addCredential(CredentialDTO credentialDTO) {
 		Credential credential = modelMapper.map(credentialDTO, Credential.class);
-		credential.setPassword(bCryptPasswordEncoder.encode(credentialDTO.getPassword()));
+		String password = bCryptPasswordEncoder.encode(credential.getPassword());
+		credential.setPassword(password);
 		return modelMapper.map(credentialRepository.save(credential), CredentialDTO.class);
 	}
 
 	@Override
-	public List<Credential> getAll() {
+	public List<CredentialDTO> getAll() {
 		List<CredentialDTO> listCredentialDTO = new ArrayList<CredentialDTO>();
 		List<Credential> credentialList = new ArrayList<Credential>();
 		credentialList = credentialRepository.findAll();
-//		for (Credential credential : credentialList) {
-//			listCredentialDTO.add(modelMapper.map(credential, CredentialDTO.class));
-//		}
-//		return listCredentialDTO;
-		return credentialList;
+		for (Credential credential : credentialList) {
+			listCredentialDTO.add(modelMapper.map(credential, CredentialDTO.class));
+		}
+		return listCredentialDTO;
+		//return credentialList;
 
 	}
 
@@ -77,10 +80,13 @@ public class CredentialServiceImpl implements ICredentialService{
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Credential credential = credentialRepository.findByUsername(username);
+
+		Credential credential = this.credentialRepository.findByusername(username);
 		if (credential == null) {
 			throw new UsernameNotFoundException(username);
 		}
-		return new User(credential.getUsername(), credential.getPassword(), emptyList());
+		List<GrantedAuthority> grantedAuthorities = AuthorityUtils
+            	.commaSeparatedStringToAuthorityList("ROLE_" + credential.getUser().getRole());
+		return new User(credential.getUser().getIdUser().toString(), credential.getPassword(), grantedAuthorities);
 	}
 }

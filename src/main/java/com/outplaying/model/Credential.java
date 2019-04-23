@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+
 @Entity
 @Table(name = "user_credentials")
 public class Credential {
@@ -24,8 +25,8 @@ public class Credential {
 	@Column(name = "password", length = 255, nullable = false)
 	private String password;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_user")
+	@OneToOne
+	@JoinColumn(name = "id_user", nullable = false)
 	private User user;
 
 	public Long getIdCredential() {
