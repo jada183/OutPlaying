@@ -17,33 +17,33 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-//@Entity
-// @Table(name = "post")
+@Entity
+@Table(name = "post")
 public class Post {
-//
-//	@Id
-//	@GeneratedValue(strategy = GenerationType.AUTO)
-//	@Column(name = "id_post")
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id_post")
 	private Long idPost;
 
-//	@Column(name = "post_name", nullable = false)
+	@Column(name = "post_name", nullable = false)
 	private String postName;
 
-//	@Column(name = "content_text", nullable = false)
+	@Column(name = "content_text", nullable = false)
 	private String contentText;
 
-//	@Column(name = "date", nullable = false)
+	@Column(name = "date", nullable = false)
 	private Date date;
 
-//	@Column(name = "likes")
+	@Column(name = "likes")
 	private int likes;
 
-//	@ManyToOne(fetch=FetchType.LAZY)
-//	@JoinColumn(name = "user_id_user")
-//	@NotNull
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "id_user")
+	@NotNull
 	private User user;
-//
-//	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy="post")
+
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy="post")
 	private List<Comment> postComments = new ArrayList<>();
 
 	public Long getIdPost() {
@@ -93,4 +93,13 @@ public class Post {
 	public void setUserIdUser(User userIdUser) {
 		this.user = userIdUser;
 	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
 }
