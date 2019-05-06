@@ -22,7 +22,7 @@ public class Comment {
 	@Column(name = "id_comment")
 	private Long idComment;
 
-	@Column(name = "content_text")
+	@Column(name = "content_text", length = 120)
 	private String contentText;
 
 	@Column(name = "likes")
@@ -87,6 +87,22 @@ public class Comment {
 
 	public void setPostIdPost(Post postIdPost) {
 		this.post = postIdPost;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Post getPost() {
+		return post;
+	}
+
+	public void setPost(Post post) {
+		this.post = post;
 	}
 
 }

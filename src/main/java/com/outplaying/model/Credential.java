@@ -2,13 +2,13 @@ package com.outplaying.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 
 @Entity
@@ -20,9 +20,11 @@ public class Credential {
 	private Long idCredential;
 
 	@Column(name = "username", unique = true, length = 45, nullable = false)
+	@Size(min = 6, max = 18)
 	private String username;
 
-	@Column(name = "password", length = 255, nullable = false)
+	@Column(name = "password", length = 50, nullable = false)
+	@Size(min = 8)	
 	private String password;
 
 	@OneToOne

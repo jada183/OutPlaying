@@ -1,6 +1,7 @@
 package com.outplaying.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
 
 @Entity
 @Table(name = "user")
@@ -29,11 +31,15 @@ public class User {
 	@Column(name = "surname", length = 45)
 	private String surname;
 
-	@Column(name = "email", length = 60, unique = true, nullable = false)
+	@Column(name = "email", length = 80, unique = true, nullable = false)
+	@Email
 	private String email;
 
 	@Column(name = "role", length = 45, nullable = false)
 	private String role;
+	
+	@Column(name="create_acount_date", nullable = false)
+	private Date createAcountDate;
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "user")
 	private List<Post> userPost = new ArrayList<>();
@@ -84,28 +90,36 @@ public class User {
 		this.credential = credential;
 	}
 
-//	public List<Post> getUserPost() {
-//		return userPost;
-//	}
-//
-//	public void setUserPost(List<Post> userPost) {
-//		this.userPost = userPost;
-//	}
-//
-//	public List<Comment> getUserComments() {
-//		return userComments;
-//	}
-//
-//	public void setUserComments(List<Comment> userComments) {
-//		this.userComments = userComments;
-//	}
-
 	public String getRole() {
 		return role;
 	}
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public Date getCreateAcountDate() {
+		return createAcountDate;
+	}
+
+	public void setCreateAcountDate(Date createAcountDate) {
+		this.createAcountDate = createAcountDate;
+	}
+
+	public List<Post> getUserPost() {
+		return userPost;
+	}
+
+	public void setUserPost(List<Post> userPost) {
+		this.userPost = userPost;
+	}
+
+	public List<Comment> getUserComments() {
+		return userComments;
+	}
+
+	public void setUserComments(List<Comment> userComments) {
+		this.userComments = userComments;
 	}
 	
 }

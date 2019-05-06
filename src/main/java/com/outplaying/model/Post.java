@@ -29,7 +29,7 @@ public class Post {
 	@Column(name = "post_name", nullable = false)
 	private String postName;
 
-	@Column(name = "content_text", nullable = false)
+	@Column(name = "content_text", nullable = false, length = 600)
 	private String contentText;
 
 	@Column(name = "date", nullable = false)
@@ -37,7 +37,7 @@ public class Post {
 
 	@Column(name = "likes")
 	private int likes;
-
+	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "id_user")
 	@NotNull
@@ -100,6 +100,14 @@ public class Post {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public List<Comment> getPostComments() {
+		return postComments;
+	}
+
+	public void setPostComments(List<Comment> postComments) {
+		this.postComments = postComments;
 	}
 	
 }
