@@ -1,9 +1,6 @@
 package com.outplaying.dto;
 
 import java.util.Date;
-import java.util.List;
-
-import com.outplaying.model.User;
 
 public class PostDTO {
 
@@ -19,10 +16,14 @@ public class PostDTO {
 
 	private int likes;
 	
-	private Date publicatedDate;
+	private Date publishDate;
+	
+	private boolean published;
 
 	private Long IdUser;
 
+	private Long idApprover;
+	
 	public Long getIdPost() {
 		return idPost;
 	}
@@ -71,12 +72,20 @@ public class PostDTO {
 		this.likes = likes;
 	}
 
-	public Date getPublicatedDate() {
-		return publicatedDate;
+	public Date getPublishDate() {
+		return publishDate;
 	}
 
-	public void setPublicatedDate(Date publicatedDate) {
-		this.publicatedDate = publicatedDate;
+	public void setPublishDate(Date publishDate) {
+		this.publishDate = publishDate;
+	}
+
+	public boolean isPublished() {
+		return published;
+	}
+
+	public void setPublished(boolean published) {
+		this.published = published;
 	}
 
 	public Long getIdUser() {
@@ -87,4 +96,11 @@ public class PostDTO {
 		IdUser = idUser;
 	}
 
+	public Long getIdApprover() {
+		return idApprover;
+	}
+
+	public void setIdApprover(Long idApprover) {
+		this.idApprover = idApprover;
+	}
 }

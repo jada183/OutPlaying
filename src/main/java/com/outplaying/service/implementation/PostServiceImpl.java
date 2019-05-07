@@ -42,6 +42,7 @@ public class PostServiceImpl implements IPostService {
 	public PostDTO addPost(PostDTO postDTO) {
 		Post post = modelMapper.map(postDTO, Post.class);
 		post.setLikes(0);
+		post.setPublished(false);
 		post.setDate(new Date());
 
 		return modelMapper.map(postRepository.save(post), PostDTO.class);

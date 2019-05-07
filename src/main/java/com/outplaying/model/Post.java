@@ -45,13 +45,19 @@ public class Post {
 	private int likes;
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name="publicated_date")
-	private Date publicatedDate;
+	@Column(name="publish_date")
+	private Date publishDate;
+	
+	@Column(name="published")
+	private boolean published;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "id_user")
 	@NotNull
 	private User user;
+	
+	@Column(name="id_Approver")
+	private Long idApprover;
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy="post")
 	private List<Comment> postComments = new ArrayList<>();
@@ -104,12 +110,21 @@ public class Post {
 		this.likes = likes;
 	}
 	
-	public Date getPublicatedDate() {
-		return publicatedDate;
+	
+	public Date getPublishDate() {
+		return publishDate;
 	}
 
-	public void setPublicatedDate(Date publicatedDate) {
-		this.publicatedDate = publicatedDate;
+	public void setPublishDate(Date publishDate) {
+		this.publishDate = publishDate;
+	}
+
+	public boolean isPublished() {
+		return published;
+	}
+
+	public void setPublished(boolean published) {
+		this.published = published;
 	}
 
 	public User getUserIdUser() {
@@ -135,5 +150,12 @@ public class Post {
 	public void setPostComments(List<Comment> postComments) {
 		this.postComments = postComments;
 	}
-	
+
+	public Long getIdApprover() {
+		return idApprover;
+	}
+
+	public void setIdApprover(Long idApprover) {
+		this.idApprover = idApprover;
+	}
 }

@@ -23,7 +23,7 @@ public class Credential {
 	@Size(min = 6, max = 18)
 	private String username;
 
-	@Column(name = "password", length = 50, nullable = false)
+	@Column(name = "password", length = 80, nullable = false)
 	@Size(min = 8)	
 	private String password;
 
