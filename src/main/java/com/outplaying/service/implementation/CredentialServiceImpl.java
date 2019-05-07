@@ -18,8 +18,6 @@ import com.outplaying.dto.CredentialDTO;
 import com.outplaying.model.Credential;
 import com.outplaying.repository.ICredentialRepository;
 import com.outplaying.service.ICredentialService;
-import static java.util.Collections.emptyList;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @Service
 public class CredentialServiceImpl implements UserDetailsService, ICredentialService {
@@ -65,17 +63,11 @@ public class CredentialServiceImpl implements UserDetailsService, ICredentialSer
 
 	@Override
 	public CredentialDTO updateCredential(CredentialDTO credentialDTO) {
-
-		return modelMapper.map(credentialRepository.save(modelMapper.map(credentialDTO, Credential.class)),
+		Credential credential = modelMapper.map(credentialDTO, Credential.class);
+		String password = bCryptPasswordEncoder.encode(credential.getPassword());
+		credential.setPassword(password);
+		return modelMapper.map(credentialRepository.save(credential),
 				CredentialDTO.class);
-	}
-
-	@Override
-	public Integer deleteById(Long idCredential) {
-		if (idCredential != null)
-			return credentialRepository.removeByIdCredential(idCredential);
-
-		return -1;
 	}
 
 	@Override

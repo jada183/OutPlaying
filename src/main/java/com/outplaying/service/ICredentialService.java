@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.outplaying.dto.CredentialDTO;
-import com.outplaying.model.Credential;
 @Service
 public interface ICredentialService {
 
@@ -17,8 +16,6 @@ public interface ICredentialService {
 	public List<CredentialDTO> getAll();
 
 	public CredentialDTO updateCredential(CredentialDTO credentialDTO);
-
-	public Integer deleteById(Long idCredential);
 	
 	public UserDetails loadUserByUsername(String username);
 }

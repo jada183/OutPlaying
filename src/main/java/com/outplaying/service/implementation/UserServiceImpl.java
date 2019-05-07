@@ -1,6 +1,7 @@
 package com.outplaying.service.implementation;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -35,6 +36,7 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public UserDTO addUser(UserDTO userDTO) {
 		User user = modelMapper.map(userDTO, User.class);
+		user.setCreateAcountDate(new Date());
 		return modelMapper.map(userRepository.save(user), UserDTO.class);
 	}
 

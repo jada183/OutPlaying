@@ -1,6 +1,6 @@
 package com.outplaying.dto;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import com.outplaying.model.User;
@@ -11,15 +11,17 @@ public class PostDTO {
 
 	private String postName;
 
-	private List<String> picturesURL;
+	private String picturesURL;
 
 	private String contentText;
 
 	private Date date;
 
 	private int likes;
+	
+	private Date publicatedDate;
 
-	private User userIdUser;
+	private Long IdUser;
 
 	public Long getIdPost() {
 		return idPost;
@@ -37,11 +39,11 @@ public class PostDTO {
 		this.postName = postName;
 	}
 
-	public List<String> getPicturesURL() {
+	public String getPicturesURL() {
 		return picturesURL;
 	}
 
-	public void setPicturesURL(List<String> picturesURL) {
+	public void setPicturesURL(String picturesURL) {
 		this.picturesURL = picturesURL;
 	}
 
@@ -69,12 +71,20 @@ public class PostDTO {
 		this.likes = likes;
 	}
 
-	public User getUserIdUser() {
-		return userIdUser;
+	public Date getPublicatedDate() {
+		return publicatedDate;
 	}
 
-	public void setUserIdUser(User userIdUser) {
-		this.userIdUser = userIdUser;
+	public void setPublicatedDate(Date publicatedDate) {
+		this.publicatedDate = publicatedDate;
+	}
+
+	public Long getIdUser() {
+		return IdUser;
+	}
+
+	public void setIdUser(Long idUser) {
+		IdUser = idUser;
 	}
 
 }

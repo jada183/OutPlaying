@@ -1,7 +1,5 @@
 package com.outplaying.dto;
 
-import com.outplaying.model.User;
-
 public class CredentialDTO {
 
 	private Long idCredential;

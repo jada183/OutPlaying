@@ -1,7 +1,7 @@
 package com.outplaying.model;
 
 import java.util.ArrayList;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -15,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -28,15 +30,23 @@ public class Post {
 
 	@Column(name = "post_name", nullable = false)
 	private String postName;
-
+	
+	@Column(name="picture")
+	private String picturesURL;
+	
 	@Column(name = "content_text", nullable = false, length = 600)
 	private String contentText;
 
+	@Temporal(TemporalType.DATE)
 	@Column(name = "date", nullable = false)
 	private Date date;
 
 	@Column(name = "likes")
 	private int likes;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="publicated_date")
+	private Date publicatedDate;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "id_user")
@@ -61,6 +71,14 @@ public class Post {
 	public void setPostName(String postName) {
 		this.postName = postName;
 	}
+	
+	public String getPicturesURL() {
+		return picturesURL;
+	}
+
+	public void setPicturesURL(String picturesURL) {
+		this.picturesURL = picturesURL;
+	}
 
 	public String getContentText() {
 		return contentText;
@@ -84,6 +102,14 @@ public class Post {
 
 	public void setLikes(int likes) {
 		this.likes = likes;
+	}
+	
+	public Date getPublicatedDate() {
+		return publicatedDate;
+	}
+
+	public void setPublicatedDate(Date publicatedDate) {
+		this.publicatedDate = publicatedDate;
 	}
 
 	public User getUserIdUser() {

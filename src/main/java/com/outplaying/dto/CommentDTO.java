@@ -1,6 +1,7 @@
 package com.outplaying.dto;
 
-import java.sql.Date;
+
+import java.util.Date;
 
 import com.outplaying.model.Post;
 import com.outplaying.model.User;

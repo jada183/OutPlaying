@@ -14,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 
 @Entity
@@ -38,6 +40,7 @@ public class User {
 	@Column(name = "role", length = 45, nullable = false)
 	private String role;
 	
+	@Temporal(TemporalType.DATE)
 	@Column(name="create_acount_date", nullable = false)
 	private Date createAcountDate;
 
