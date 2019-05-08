@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.outplaying.dto.RegisterUserDTO;
 import com.outplaying.dto.UserDTO;
 import com.outplaying.service.IUserService;
 
@@ -36,9 +37,9 @@ public class UserController {
 	}
 
 	@PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public UserDTO addUser(@RequestBody UserDTO userDTO) {
+	public UserDTO addUser(@RequestBody RegisterUserDTO registerUserDTO) {
 
-		return userService.addUser(userDTO);
+		return userService.addUser(registerUserDTO.getUserDTO(), registerUserDTO.getCredentialDTO());
 	}
 
 	@PutMapping(value = "")

@@ -19,6 +19,12 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import com.outplaying.enumerables.PostStatus;
+
+/**
+ * @author jason.francoquintero
+ *
+ */
 @Entity
 @Table(name = "post")
 public class Post {
@@ -45,19 +51,20 @@ public class Post {
 	private int likes;
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name="publish_date")
-	private Date publishDate;
+	@Column(name="manage_date")
+	private Date manageDate;
 	
-	@Column(name="published")
-	private boolean published;
+	@Column(name="status")
+	private PostStatus status;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "id_user")
 	@NotNull
 	private User user;
 	
-	@Column(name="id_Approver")
-	private Long idApprover;
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="id_user_manager")
+	private User userManager;
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy="post")
 	private List<Comment> postComments = new ArrayList<>();
@@ -110,21 +117,20 @@ public class Post {
 		this.likes = likes;
 	}
 	
-	
-	public Date getPublishDate() {
-		return publishDate;
+	public Date getManageDate() {
+		return manageDate;
 	}
 
-	public void setPublishDate(Date publishDate) {
-		this.publishDate = publishDate;
+	public void setManageDate(Date manageDate) {
+		this.manageDate = manageDate;
 	}
 
-	public boolean isPublished() {
-		return published;
+	public PostStatus getStatus() {
+		return status;
 	}
 
-	public void setPublished(boolean published) {
-		this.published = published;
+	public void setStatus(PostStatus status) {
+		this.status = status;
 	}
 
 	public User getUserIdUser() {
@@ -151,11 +157,11 @@ public class Post {
 		this.postComments = postComments;
 	}
 
-	public Long getIdApprover() {
-		return idApprover;
+	public User getUserManager() {
+		return userManager;
 	}
 
-	public void setIdApprover(Long idApprover) {
-		this.idApprover = idApprover;
+	public void setUserManager(User userManager) {
+		this.userManager = userManager;
 	}
 }

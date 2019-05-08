@@ -30,8 +30,8 @@ public class CredentialController {
 	public CredentialDTO findById(@PathVariable Long idCredential) {
 		return credentialService.findCredentialById(idCredential);
 	}
-
-	@PostMapping(value = "/sign-up")
+	// sin uso solo para casos de prueba
+	@PostMapping(value = "")
 	public CredentialDTO addCredential(@RequestBody CredentialDTO credentialDTO) {
 		return credentialService.addCredential(credentialDTO);
 	}

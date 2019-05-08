@@ -20,4 +20,6 @@ public interface IPostService {
 	
 	public Integer deleteById(Long id);
 	
+	public PostDTO updateStatusPost(PostDTO postDTO);
+	
 }

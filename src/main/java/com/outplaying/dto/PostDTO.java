@@ -2,6 +2,8 @@ package com.outplaying.dto;
 
 import java.util.Date;
 
+import com.outplaying.enumerables.PostStatus;
+
 public class PostDTO {
 
 	private Long idPost;
@@ -16,13 +18,13 @@ public class PostDTO {
 
 	private int likes;
 	
-	private Date publishDate;
+	private Date manageDate;
 	
-	private boolean published;
+	private PostStatus status;
 
 	private Long IdUser;
-
-	private Long idApprover;
+	
+	private Long IdUserManager;
 	
 	public Long getIdPost() {
 		return idPost;
@@ -72,20 +74,20 @@ public class PostDTO {
 		this.likes = likes;
 	}
 
-	public Date getPublishDate() {
-		return publishDate;
+	public Date getManageDate() {
+		return manageDate;
 	}
 
-	public void setPublishDate(Date publishDate) {
-		this.publishDate = publishDate;
+	public void setManageDate(Date manageDate) {
+		this.manageDate = manageDate;
 	}
 
-	public boolean isPublished() {
-		return published;
+	public PostStatus getStatus() {
+		return status;
 	}
 
-	public void setPublished(boolean published) {
-		this.published = published;
+	public void setStatus(PostStatus status) {
+		this.status = status;
 	}
 
 	public Long getIdUser() {
@@ -96,11 +98,12 @@ public class PostDTO {
 		IdUser = idUser;
 	}
 
-	public Long getIdApprover() {
-		return idApprover;
+	public Long getIdUserManager() {
+		return IdUserManager;
 	}
 
-	public void setIdApprover(Long idApprover) {
-		this.idApprover = idApprover;
+	public void setIdUserManager(Long idUserManager) {
+		IdUserManager = idUserManager;
 	}
+
 }

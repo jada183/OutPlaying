@@ -26,7 +26,7 @@ public class CredentialServiceImpl implements UserDetailsService, ICredentialSer
 
 	@Autowired
 	private ICredentialRepository credentialRepository;
-
+	
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -41,7 +41,7 @@ public class CredentialServiceImpl implements UserDetailsService, ICredentialSer
 	}
 
 	@Override
-	public CredentialDTO addCredential(CredentialDTO credentialDTO) {
+	public CredentialDTO addCredential(CredentialDTO credentialDTO ) {
 		Credential credential = modelMapper.map(credentialDTO, Credential.class);
 		String password = bCryptPasswordEncoder.encode(credential.getPassword());
 		credential.setPassword(password);

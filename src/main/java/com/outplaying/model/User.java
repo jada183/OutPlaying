@@ -52,7 +52,10 @@ public class User {
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "user")
 	private List<Comment> userComments = new ArrayList<>();
-
+	
+	@OneToMany(cascade = CascadeType.PERSIST, mappedBy="userManager", orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<Post> postManaged = new ArrayList<>();
+	
 	public Long getIdUser() {
 		return idUser;
 	}
@@ -124,5 +127,12 @@ public class User {
 	public void setUserComments(List<Comment> userComments) {
 		this.userComments = userComments;
 	}
-	
+
+	public List<Post> getPostManaged() {
+		return postManaged;
+	}
+
+	public void setPostManaged(List<Post> postManaged) {
+		this.postManaged = postManaged;
+	}
 }

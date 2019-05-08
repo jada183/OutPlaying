@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.outplaying.dto.CredentialDTO;
 import com.outplaying.dto.UserDTO;
 @Service
 public interface IUserService {
@@ -12,7 +13,7 @@ public interface IUserService {
 
 	public List<UserDTO> findUsersByFilter(UserDTO userDTO);
 
-	public UserDTO addUser(UserDTO userDTO);
+	public UserDTO addUser(UserDTO userDTO, CredentialDTO credentialDTO);
 
 	public List<UserDTO> getAll();
 

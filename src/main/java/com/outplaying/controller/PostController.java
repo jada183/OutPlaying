@@ -44,6 +44,11 @@ public class PostController {
 		return this.postService.updatePost(postDTO);
 	}
 	
+	@PutMapping(value= "/status")
+	public PostDTO updateStatusPost(@RequestBody PostDTO postDTO) {
+		return this.postService.updateStatusPost(postDTO);
+	}
+	
 	@DeleteMapping(value="/{idPost}")
 	public Integer deleteById(@PathVariable Long idPost) {
 		return this.postService.deleteById(idPost);
