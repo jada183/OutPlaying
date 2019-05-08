@@ -44,7 +44,7 @@ public class PostController {
 		return this.postService.updatePost(postDTO);
 	}
 	
-	@PutMapping(value= "/status")
+	@PutMapping(value= "/admin/status")
 	public PostDTO updateStatusPost(@RequestBody PostDTO postDTO) {
 		return this.postService.updateStatusPost(postDTO);
 	}
