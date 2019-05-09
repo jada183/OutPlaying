@@ -51,12 +51,31 @@ public class PostServiceImpl implements IPostService {
 
 	@Override
 	public PostDTO addPost(PostDTO postDTO) {
-		Post post = modelMapper.map(postDTO, Post.class);
-		post.setLikes(0);
-		post.setStatus(postDTO.getStatus());
-		post.setDate(new Date());
-
-		return modelMapper.map(postRepository.save(post), PostDTO.class);
+		
+		
+//		Post post = modelMapper.map(postDTO, Post.class);
+//		post.setLikes(0);
+//		post.setStatus(postDTO.getStatus());
+//		post.setDate(new Date());
+//		return modelMapper.map(postRepository.save(post), PostDTO.class);
+		// comprobar que el idUser del post es del usuario autentificado.
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Long idUserAuth = 0l;
+		if(!"anonymousUser".equals(authentication.getName())) {
+			 idUserAuth = Long.parseLong(authentication.getName());
+		}
+		
+		if(postDTO.getIdUser() == idUserAuth) {
+			Post post = modelMapper.map(postDTO, Post.class);
+			post.setLikes(0);
+			post.setStatus(postDTO.getStatus());
+			post.setDate(new Date());
+			return modelMapper.map(postRepository.save(post), PostDTO.class);
+		} else {
+			throw new HttpMessageNotReadableException("you cant save post",
+					new Throwable("you cant save post. the user binding to post isnt the authenticated"));
+		}
 	}
 
 	@Override
