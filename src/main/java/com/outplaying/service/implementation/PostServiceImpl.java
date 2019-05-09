@@ -10,6 +10,8 @@ import javax.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.outplaying.dto.PostDTO;
@@ -29,7 +31,7 @@ public class PostServiceImpl implements IPostService {
 	private IPostRepository postRepository;
 
 	@Autowired
-	IUserRepository userRepository;
+	private IUserRepository userRepository;
 
 	@Override
 	public PostDTO findPostById(Long id) {
@@ -59,14 +61,25 @@ public class PostServiceImpl implements IPostService {
 
 	@Override
 	public PostDTO updatePost(PostDTO postDTO) {
+		
+		// metodo que comprueba autentificacion
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Long idUserAuth = Long.parseLong(authentication.getName());
 		Optional<Post> postOp = postRepository.findById(postDTO.getIdPost());
+
 		if(postOp.isPresent()) {
 			if (PostStatus.Pendiente.equals(postOp.get().getStatus())) {
-				Post post = postOp.get();
-				post.setPostName(postDTO.getPostName());
-				post.setPicturesURL(postDTO.getPicturesURL());
-				post.setContentText(postDTO.getContentText());
-				return modelMapper.map(postRepository.save(post), PostDTO.class);
+				if(postOp.get().getUser().getIdUser()== idUserAuth) {
+					Post post = postOp.get();
+					post.setPostName(postDTO.getPostName());
+					post.setPicturesURL(postDTO.getPicturesURL());
+					post.setContentText(postDTO.getContentText());
+					return modelMapper.map(postRepository.save(post), PostDTO.class);
+				} else {
+					throw new HttpMessageNotReadableException("you cant update this post posted",
+							new Throwable("you cant update this post "));
+				}
+				
 			} else {
 				throw new HttpMessageNotReadableException("you cant udpate post posted",
 						new Throwable("you cant udpate post posted"));
@@ -75,12 +88,25 @@ public class PostServiceImpl implements IPostService {
 			throw new EntityNotFoundException("Post  with id " + postDTO.getIdPost() + " does not exists");
 		}
 		
+		
 	}
 
 	@Override
 	public Integer deleteById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Long idUserAuth = Long.parseLong(authentication.getName());
+		Optional<Post> postOp = postRepository.findById(id);
+		if(postOp.isPresent()) {
+			if(postOp.get().getUser().getIdUser()== idUserAuth) {
+				return postRepository.removeByIdPost(id);
+			} else {
+				throw new HttpMessageNotReadableException("you cant delete this post",
+						new Throwable("you cant delete this post"));
+			}
+		} else {
+			throw new EntityNotFoundException("Post  with id " + id + " does not exists");
+		}
+		
 	}
 
 	@Override
@@ -103,6 +129,33 @@ public class PostServiceImpl implements IPostService {
 		} else {
 			throw new EntityNotFoundException("Post  with id " + postDTO.getIdPost() + " does not exists");
 		}
+	}
+
+	@Override
+	public PostDTO updatePostByAdmin(PostDTO postDTO) {
+		Optional<Post> postOp = postRepository.findById(postDTO.getIdPost());
+		if(postOp.isPresent()) {
+			if (PostStatus.Pendiente.equals(postOp.get().getStatus())) {
+				Post post = postOp.get();
+				post.setPostName(postDTO.getPostName());
+				post.setPicturesURL(postDTO.getPicturesURL());
+				post.setContentText(postDTO.getContentText());
+				return modelMapper.map(postRepository.save(post), PostDTO.class);
+			} else {
+				throw new HttpMessageNotReadableException("you cant udpate post posted",
+						new Throwable("you cant udpate post posted"));
+			}
+		} else {
+			throw new EntityNotFoundException("Post  with id " + postDTO.getIdPost() + " does not exists");
+		}
+	}
+
+	@Override
+	public Integer deleteByAdmin(Long id) {
+		if (id != null)
+			return postRepository.removeByIdPost(id);
+
+		return -1;
 	}
 
 }

@@ -17,40 +17,50 @@ import com.outplaying.dto.PostDTO;
 import com.outplaying.service.IPostService;
 
 @RestController
-@RequestMapping(value="post")
+@RequestMapping(value = "post")
 public class PostController {
-	
+
 	@Autowired
 	private IPostService postService;
-	
-	
-	@GetMapping(value="")
+
+	@GetMapping(value = "")
 	public List<PostDTO> getAll() {
 		return this.postService.getAll();
 	}
-	
-	@GetMapping(value="/{idPost}")
+
+	@GetMapping(value = "/{idPost}")
 	public PostDTO getPostById(@PathVariable(value = "idPost") Long idPost) {
 		return this.postService.findPostById(idPost);
 	}
-	
-	@PostMapping(value="",  consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+
+	@PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public PostDTO addPost(@RequestBody PostDTO postDTO) {
 		return this.postService.addPost(postDTO);
 	}
-	
-	@PutMapping(value= "")
+
+	@PutMapping(value = "")
 	public PostDTO updatePost(@RequestBody PostDTO postDTO) {
 		return this.postService.updatePost(postDTO);
 	}
-	
-	@PutMapping(value= "/admin/status")
+
+	@PutMapping(value = "/admin")
+	public PostDTO updatePostByAdmin(@RequestBody PostDTO postDTO) {
+
+		return this.postService.updatePostByAdmin(postDTO);
+	}
+
+	@PutMapping(value = "/admin/status")
 	public PostDTO updateStatusPost(@RequestBody PostDTO postDTO) {
 		return this.postService.updateStatusPost(postDTO);
 	}
-	
-	@DeleteMapping(value="/{idPost}")
+
+	@DeleteMapping(value = "/{idPost}")
 	public Integer deleteById(@PathVariable Long idPost) {
 		return this.postService.deleteById(idPost);
+	}
+
+	@DeleteMapping(value = "/admin/{idPost}")
+	public Integer deleteByAdmin(@PathVariable Long idPost) {
+		return this.postService.deleteByAdmin(idPost);
 	}
 }

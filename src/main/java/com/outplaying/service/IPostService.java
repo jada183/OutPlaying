@@ -22,4 +22,7 @@ public interface IPostService {
 	
 	public PostDTO updateStatusPost(PostDTO postDTO);
 	
+	public PostDTO updatePostByAdmin(PostDTO postDTO);
+	
+	public Integer deleteByAdmin(Long id);
 }
