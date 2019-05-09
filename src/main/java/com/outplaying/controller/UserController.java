@@ -47,10 +47,21 @@ public class UserController {
 
 		return this.userService.updateUser(userDTO);
 	}
+	
+	@PutMapping(value = "/admin")
+	public UserDTO updateUserByAdmin(@RequestBody UserDTO userDTO) {
 
+		return this.userService.updateUserByAdmin(userDTO);
+	}
+	
 	@DeleteMapping(value = "/{idUser}")
 	public Integer deleteById(@PathVariable Long idUser) {
 		return this.userService.deleteById(idUser);
+	}
+	
+	@DeleteMapping(value = "/admin/{idUser}")
+	public Integer deleteByAdmin(@PathVariable Long idUser) {
+		return this.userService.deleteByAdmin(idUser);
 	}
 
 }

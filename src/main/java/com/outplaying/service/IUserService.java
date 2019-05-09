@@ -19,5 +19,9 @@ public interface IUserService {
 
 	public UserDTO updateUser(UserDTO userDTO);
 	
+	public UserDTO updateUserByAdmin(UserDTO userDTO);
+	
 	public Integer deleteById(Long idUser);
+	
+	public Integer deleteByAdmin(Long idUser);
 }

@@ -76,7 +76,7 @@ public class PostServiceImpl implements IPostService {
 					post.setContentText(postDTO.getContentText());
 					return modelMapper.map(postRepository.save(post), PostDTO.class);
 				} else {
-					throw new HttpMessageNotReadableException("you cant update this post posted",
+					throw new HttpMessageNotReadableException("you cant update this post",
 							new Throwable("you cant update this post "));
 				}
 				
