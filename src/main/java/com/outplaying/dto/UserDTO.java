@@ -63,5 +63,5 @@ public class UserDTO {
 	public void setCreateAcountDate(Date createAcountDate) {
 		this.createAcountDate = createAcountDate;
 	}
-	
+
 }

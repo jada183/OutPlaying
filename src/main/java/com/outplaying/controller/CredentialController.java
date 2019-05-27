@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.outplaying.dto.CredentialDTO;
+import com.outplaying.dto.UpdatePasswordDTO;
 import com.outplaying.service.ICredentialService;
 
 @RestController
@@ -39,6 +40,10 @@ public class CredentialController {
 	@PutMapping(value = "")
 	public CredentialDTO updateCredential(@RequestBody CredentialDTO credentialDTO) {
 		return credentialService.updateCredential(credentialDTO);
+	}
+	@PutMapping(value = "/password")
+	public CredentialDTO updatePassword(@RequestBody UpdatePasswordDTO updatePasswordDTO)  {
+		return credentialService.updatePassword(updatePasswordDTO);
 	}
 
 }

@@ -10,6 +10,8 @@ public class CredentialDTO {
 	
 	private Long idUser;
 
+	private String confirmPassword;
+	
 	public Long getIdCredential() {
 		return idCredential;
 	}
@@ -42,4 +44,13 @@ public class CredentialDTO {
 		this.idUser = idUser;
 	}
 
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
+	}
+
+	
 }

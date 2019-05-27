@@ -32,7 +32,6 @@ public class UserController {
 
 	@GetMapping(value = "/{idUser}")
 	public UserDTO userById(@PathVariable Long idUser) {
-
 		return userService.findUserById(idUser);
 	}
 

@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.outplaying.dto.CredentialDTO;
+import com.outplaying.dto.UpdatePasswordDTO;
 @Service
 public interface ICredentialService {
 
@@ -18,4 +19,6 @@ public interface ICredentialService {
 	public CredentialDTO updateCredential(CredentialDTO credentialDTO);
 	
 	public UserDetails loadUserByUsername(String username);
+	
+	public CredentialDTO updatePassword(UpdatePasswordDTO updatePasswordDTO);
 }

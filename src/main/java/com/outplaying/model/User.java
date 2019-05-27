@@ -135,4 +135,5 @@ public class User {
 	public void setPostManaged(List<Post> postManaged) {
 		this.postManaged = postManaged;
 	}
+	
 }
