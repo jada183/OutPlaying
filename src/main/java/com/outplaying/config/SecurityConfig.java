@@ -42,10 +42,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig))
 				.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtConfig))
 				.authorizeRequests()
-				.antMatchers("/**").permitAll()
+				.antMatchers("/h2", "/h2/**", "/**").permitAll()
 //				.antMatchers(HttpMethod.POST, jwtConfig.getUri(), "/api/v1/credentials/sign-up", "/api/v1/users").permitAll()
 //				.antMatchers(HttpMethod.GET, "/api/v1/users").hasRole("ADMIN")
 				.anyRequest().authenticated();
+		http.headers().frameOptions().disable();
 	}
 
 	@Override
