@@ -30,7 +30,7 @@ import com.outplaying.enumerables.PostStatus;
 public class Post {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_post")
 	private Long idPost;
 

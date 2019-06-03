@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
 @Table(name = "user_credentials")
 public class Credential {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_user_credential", length = 20)
 	private Long idCredential;
 
