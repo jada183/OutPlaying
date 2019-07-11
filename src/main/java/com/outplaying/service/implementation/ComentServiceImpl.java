@@ -1,13 +1,20 @@
 package com.outplaying.service.implementation;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.outplaying.dto.CommentDTO;
+import com.outplaying.model.Comment;
+import com.outplaying.model.Post;
 import com.outplaying.repository.ICommentRepository;
+import com.outplaying.repository.IPostRepository;
 import com.outplaying.service.ICommentService;
 @Service
 public class ComentServiceImpl implements ICommentService {
@@ -17,10 +24,24 @@ public class ComentServiceImpl implements ICommentService {
 	@Autowired
 	private ICommentRepository commentRepository; 
 	
+	@Autowired
+	private IPostRepository postRepository;
+	
 	@Override
 	public List<CommentDTO> getListByPostId(Long idPost) {
-		// TODO Auto-generated method stub
-		return null;
+		List<CommentDTO> commentsDTO = new ArrayList<>();
+		List<Comment> comentsBack = new ArrayList<>();
+		Optional<Post> postOp = postRepository.findById(idPost);
+		if(postOp.isPresent()) { 
+			comentsBack = commentRepository.commentsByPost(postOp.get());
+			for (Comment c : comentsBack) {
+				commentsDTO.add(modelMapper.map(c, CommentDTO.class));
+			}
+			return commentsDTO;
+		} else {
+			throw new EntityNotFoundException("Post  with id " + idPost + " does not exists");
+		}
+		
 	}
 
 	@Override

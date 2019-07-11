@@ -3,8 +3,6 @@ package com.outplaying.dto;
 
 import java.util.Date;
 
-import com.outplaying.model.Post;
-import com.outplaying.model.User;
 
 public class CommentDTO {
 
@@ -16,9 +14,9 @@ public class CommentDTO {
 
 	private Date date;
 
-	private User userIdUser;
+	private Long IdUser;
 
-	private Post postIdPost;
+	private Long IdPost;
 
 	public Long getIdComment() {
 		return idComment;
@@ -52,20 +50,20 @@ public class CommentDTO {
 		this.date = date;
 	}
 
-	public User getUserIdUser() {
-		return userIdUser;
+	public Long getIdUser() {
+		return IdUser;
 	}
 
-	public void setUserIdUser(User userIdUser) {
-		this.userIdUser = userIdUser;
+	public void setIdUser(Long idUser) {
+		IdUser = idUser;
 	}
 
-	public Post getPostIdPost() {
-		return postIdPost;
+	public Long getIdPost() {
+		return IdPost;
 	}
 
-	public void setPostIdPost(Post postIdPost) {
-		this.postIdPost = postIdPost;
+	public void setIdPost(Long idPost) {
+		IdPost = idPost;
 	}
 
 }

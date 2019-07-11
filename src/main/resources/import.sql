@@ -11,3 +11,4 @@ INSERT INTO post(content_text, date, likes, manage_date, picture, post_name, sta
 
 
 INSERT INTO comment(content_text, likes, date, id_user, id_post) VALUES('comentario de prueba del primer post', '0', '2019-05-03', '2', '1');
+INSERT INTO comment(content_text, likes, date, id_user, id_post) VALUES('comentario de prueba del primer post', '0', '2019-05-03', '1', '2');
