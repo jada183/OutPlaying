@@ -4,11 +4,12 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.outplaying.dto.CommentDTO;
 import com.outplaying.repository.ICommentRepository;
 import com.outplaying.service.ICommentService;
-
+@Service
 public class ComentServiceImpl implements ICommentService {
 	
 	ModelMapper modelMapper = new ModelMapper();
@@ -17,13 +18,19 @@ public class ComentServiceImpl implements ICommentService {
 	private ICommentRepository commentRepository; 
 	
 	@Override
-	public List<CommentDTO> getList() {
+	public List<CommentDTO> getListByPostId(Long idPost) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public CommentDTO getCommentById() {
+	public List<CommentDTO> getListByUserId(Long idUser) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public CommentDTO getCommentById(Long commentId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -33,9 +40,9 @@ public class ComentServiceImpl implements ICommentService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
-	public CommentDTO updateComment(CommentDTO commentDTO) {
+	public CommentDTO addLikes(Long idComment) {
 		// TODO Auto-generated method stub
 		return null;
 	}

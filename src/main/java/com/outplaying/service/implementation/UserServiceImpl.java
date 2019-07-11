@@ -78,21 +78,26 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public UserDTO updateUser(UserDTO userDTO) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Long idUserAuth = Long.parseLong(authentication.getName());
-		Optional<User> userOp = userRepository.findById(userDTO.getIdUser());
-		if (userOp.isPresent()) {
-			if(userOp.get().getIdUser() == idUserAuth) { 
-				User userBack = userOp.get();
-				userBack.setName(userDTO.getName());
-				userBack.setSurname(userDTO.getSurname());
-				userBack.setEmail(userDTO.getEmail());
-				return modelMapper.map(userRepository.save(userBack), UserDTO.class);
-			} else { 
-				throw new HttpMessageNotReadableException("you cant update this user ",
-						new Throwable("you cant update this user "));
+		if (!"anonymousUser".equals(authentication.getName())) {
+			Long idUserAuth = Long.parseLong(authentication.getName());
+			Optional<User> userOp = userRepository.findById(userDTO.getIdUser());
+			if (userOp.isPresent()) {
+				if (userOp.get().getIdUser() == idUserAuth) {
+					User userBack = userOp.get();
+					userBack.setName(userDTO.getName());
+					userBack.setSurname(userDTO.getSurname());
+					userBack.setEmail(userDTO.getEmail());
+					return modelMapper.map(userRepository.save(userBack), UserDTO.class);
+				} else {
+					throw new HttpMessageNotReadableException("you cant update this user ",
+							new Throwable("you cant update this user "));
+				}
+			} else {
+				throw new EntityNotFoundException("User  with id " + userDTO.getIdUser() + " does not exists");
 			}
 		} else {
-			throw new EntityNotFoundException("User  with id " + userDTO.getIdUser() + " does not exists");
+			throw new HttpMessageNotReadableException("you cant update this user. you dont have authenticated ",
+					new Throwable("you cant update this user, you dont have authenticated "));
 		}
 	}
 
@@ -100,7 +105,9 @@ public class UserServiceImpl implements IUserService {
 	public Integer deleteById(Long idUser) {
 		// TO DO
 		// crear forma de solcitar eliminar cuenta.
-		return 1;
+		// TEMPORAL
+		return this.userRepository.removeByIdUser(idUser);
+
 	}
 
 	@Override

@@ -99,7 +99,7 @@ public class CredentialServiceImpl implements UserDetailsService, ICredentialSer
 		Optional<com.outplaying.model.User> userOp = userRepository.findById(updatePasswordDTO.getIdUser());
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication.getName() != "anonymousUser") {
+		if (!"anonymousUser".equals(authentication.getName())) {
 			Long idUserAuth = Long.parseLong(authentication.getName());
 
 			if (updatePasswordDTO.getIdUser() == idUserAuth) {

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.outplaying.dto.PostDTO;
+import com.outplaying.dto.PostStatusUpdateDTO;
 import com.outplaying.service.IPostService;
 
 @RestController
@@ -50,8 +51,13 @@ public class PostController {
 	}
 
 	@PutMapping(value = "/admin/status")
-	public PostDTO updateStatusPost(@RequestBody PostDTO postDTO) {
-		return this.postService.updateStatusPost(postDTO);
+	public PostDTO updateStatusPost(@RequestBody PostStatusUpdateDTO postStatusUpdateDTO) {
+		return this.postService.updateStatusPost(postStatusUpdateDTO);
+	}
+	
+	@PutMapping(value="/like/{idPost}")
+	public PostDTO addLikes(@PathVariable Long idPost) {
+		return this.postService.addLikes(idPost);
 	}
 
 	@DeleteMapping(value = "/{idPost}")
