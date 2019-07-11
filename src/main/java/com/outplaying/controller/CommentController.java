@@ -44,7 +44,7 @@ public class CommentController {
 		return this.commentService.createComment(commentDTO);
 	}
 	
-	@PutMapping(value="/{idComment}")
+	@PutMapping(value="/like/{idComment}")
 	public CommentDTO addLike(@PathVariable Long idComment) { 
 		return this.commentService.addLikes(idComment);
 	}
@@ -54,7 +54,7 @@ public class CommentController {
 		return this.commentService.deleteComment(idComment);
 	}
 	
-	@DeleteMapping(value="")
+	@DeleteMapping(value="/admin")
 	public Integer deleteByAdmin(@PathVariable Long idComment) {
 		return this.commentService.deleteCommentByAdmin(idComment);
 	}
