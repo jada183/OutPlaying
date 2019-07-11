@@ -13,8 +13,10 @@ import org.springframework.stereotype.Service;
 import com.outplaying.dto.CommentDTO;
 import com.outplaying.model.Comment;
 import com.outplaying.model.Post;
+import com.outplaying.model.User;
 import com.outplaying.repository.ICommentRepository;
 import com.outplaying.repository.IPostRepository;
+import com.outplaying.repository.IUserRepository;
 import com.outplaying.service.ICommentService;
 @Service
 public class ComentServiceImpl implements ICommentService {
@@ -26,6 +28,9 @@ public class ComentServiceImpl implements ICommentService {
 	
 	@Autowired
 	private IPostRepository postRepository;
+	
+	@Autowired
+	private IUserRepository userRepository;
 	
 	@Override
 	public List<CommentDTO> getListByPostId(Long idPost) {
@@ -46,14 +51,24 @@ public class ComentServiceImpl implements ICommentService {
 
 	@Override
 	public List<CommentDTO> getListByUserId(Long idUser) {
-		// TODO Auto-generated method stub
-		return null;
+		List<CommentDTO> commentsDTO = new ArrayList<>();
+		List<Comment> comentsBack = new ArrayList<>();
+		Optional<User> userOp = userRepository.findById(idUser);
+		if(userOp.isPresent()) { 
+			comentsBack = commentRepository.commentsByIdUser(userOp.get());
+			for (Comment c : comentsBack) {
+				commentsDTO.add(modelMapper.map(c, CommentDTO.class));
+			}
+			return commentsDTO;
+		} else {
+			throw new EntityNotFoundException("user  with id " + idUser + " does not exists");
+		}
 	}
 	
 	@Override
 	public CommentDTO getCommentById(Long commentId) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return modelMapper.map(commentRepository.getOne(commentId), CommentDTO.class);
 	}
 
 	@Override
