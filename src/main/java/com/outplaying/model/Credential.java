@@ -29,6 +29,7 @@ public class Credential {
 
 	@OneToOne
 	@JoinColumn(name = "id_user", nullable = false)
+
 	private User user;
 
 	public Long getIdCredential() {

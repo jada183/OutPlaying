@@ -44,11 +44,13 @@ public class User {
 	@Column(name="create_acount_date", nullable = false)
 	private Date createAcountDate;
 
+
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "user")
 	private List<Post> userPost = new ArrayList<>();
 
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true, fetch = FetchType.LAZY)
 	private Credential credential;
+
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "user")
 	private List<Comment> userComments = new ArrayList<>();
