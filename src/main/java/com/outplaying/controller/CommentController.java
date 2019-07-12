@@ -54,7 +54,7 @@ public class CommentController {
 		return this.commentService.deleteComment(idComment);
 	}
 	
-	@DeleteMapping(value="/admin")
+	@DeleteMapping(value="/admin/{idComment}")
 	public Integer deleteByAdmin(@PathVariable Long idComment) {
 		return this.commentService.deleteCommentByAdmin(idComment);
 	}

@@ -77,22 +77,6 @@ public class Comment {
 		this.date = date;
 	}
 
-	public User getUserIdUser() {
-		return user;
-	}
-
-	public void setUserIdUser(User user) {
-		this.user = user;
-	}
-
-	public Post getPostIdPost() {
-		return post;
-	}
-
-	public void setPostIdPost(Post postIdPost) {
-		this.post = postIdPost;
-	}
-
 	public User getUser() {
 		return user;
 	}

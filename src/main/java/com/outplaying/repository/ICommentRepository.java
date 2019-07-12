@@ -15,6 +15,9 @@ public interface ICommentRepository extends JpaRepository<Comment, Long> {
 
 	
 	@Transactional
+	public Integer removeByIdComment(Long idComment);
+	
+	@Transactional
 	@Query("SELECT c  FROM Comment c WHERE c.post = ?1")
 	public List<Comment> commentsByPost(Post post);
 	

@@ -65,7 +65,6 @@ public class PostServiceImpl implements IPostService {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (!"anonymousUser".equals(authentication.getName())) {
 			Long idUserAuth = Long.parseLong(authentication.getName());
-			;
 
 			if (postDTO.getIdUser() == idUserAuth) {
 				Post post = modelMapper.map(postDTO, Post.class);

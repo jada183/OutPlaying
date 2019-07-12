@@ -55,7 +55,7 @@ public class PostController {
 		return this.postService.updateStatusPost(postStatusUpdateDTO);
 	}
 	
-	@PutMapping(value="/like/{idPost}")
+	@PutMapping(value = "/like/{idPost}")
 	public PostDTO addLikes(@PathVariable Long idPost) {
 		return this.postService.addLikes(idPost);
 	}

@@ -14,9 +14,9 @@ public class CommentDTO {
 
 	private Date date;
 
-	private Long IdUser;
+	private Long idUser;
 
-	private Long IdPost;
+	private Long idPost;
 
 	public Long getIdComment() {
 		return idComment;
@@ -51,19 +51,19 @@ public class CommentDTO {
 	}
 
 	public Long getIdUser() {
-		return IdUser;
-	}
-
-	public void setIdUser(Long idUser) {
-		IdUser = idUser;
+		return idUser;
 	}
 
 	public Long getIdPost() {
-		return IdPost;
+		return idPost;
 	}
 
 	public void setIdPost(Long idPost) {
-		IdPost = idPost;
+		this.idPost = idPost;
+	}
+
+	public void setIdUser(Long idUser) {
+		this.idUser = idUser;
 	}
 
 }
