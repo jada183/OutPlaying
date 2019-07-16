@@ -13,21 +13,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.outplaying.dto.RegisterUserDTO;
 import com.outplaying.dto.UserDTO;
 import com.outplaying.service.IUserService;
 
 @RestController
-@RequestMapping("api/v1/user")
+@RequestMapping("users")
 public class UserController {
 
 	@Autowired
 	private IUserService userService;
-
-	@PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public UserDTO addUser(@RequestBody UserDTO userDTO) {
-
-		return userService.addUser(userDTO);
-	}
 
 	@GetMapping(value = "", produces = "application/json")
 	public List<UserDTO> listUsers() {
@@ -37,8 +32,13 @@ public class UserController {
 
 	@GetMapping(value = "/{idUser}")
 	public UserDTO userById(@PathVariable Long idUser) {
-
 		return userService.findUserById(idUser);
+	}
+
+	@PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public UserDTO addUser(@RequestBody RegisterUserDTO registerUserDTO) {
+
+		return userService.addUser(registerUserDTO.getUserDTO(), registerUserDTO.getCredentialDTO());
 	}
 
 	@PutMapping(value = "")
@@ -47,9 +47,20 @@ public class UserController {
 		return this.userService.updateUser(userDTO);
 	}
 	
-	@DeleteMapping(value="/{idUser}")
+	@PutMapping(value = "/admin")
+	public UserDTO updateUserByAdmin(@RequestBody UserDTO userDTO) {
+
+		return this.userService.updateUserByAdmin(userDTO);
+	}
+	
+	@DeleteMapping(value = "/{idUser}")
 	public Integer deleteById(@PathVariable Long idUser) {
 		return this.userService.deleteById(idUser);
 	}
 	
+	@DeleteMapping(value = "/admin/{idUser}")
+	public Integer deleteByAdmin(@PathVariable Long idUser) {
+		return this.userService.deleteByAdmin(idUser);
+	}
+
 }

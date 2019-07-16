@@ -2,8 +2,12 @@ package com.outplaying.service;
 
 import java.util.List;
 
-import com.outplaying.dto.CredentialDTO;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
+import com.outplaying.dto.CredentialDTO;
+import com.outplaying.dto.UpdatePasswordDTO;
+@Service
 public interface ICredentialService {
 
 	public CredentialDTO findCredentialById(Long idCredential);
@@ -13,6 +17,8 @@ public interface ICredentialService {
 	public List<CredentialDTO> getAll();
 
 	public CredentialDTO updateCredential(CredentialDTO credentialDTO);
-
-	public Integer deleteById(Long idCredential);
+	
+	public UserDetails loadUserByUsername(String username);
+	
+	public CredentialDTO updatePassword(UpdatePasswordDTO updatePasswordDTO);
 }

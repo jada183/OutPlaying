@@ -1,7 +1,5 @@
 package com.outplaying.dto;
 
-import com.outplaying.model.User;
-
 public class CredentialDTO {
 
 	private Long idCredential;
@@ -9,9 +7,11 @@ public class CredentialDTO {
 	private String username;
 
 	private String password;
+	
+	private Long idUser;
 
-	private User user;
-
+	private String confirmPassword;
+	
 	public Long getIdCredential() {
 		return idCredential;
 	}
@@ -36,12 +36,21 @@ public class CredentialDTO {
 		this.password = password;
 	}
 
-	public User getUser() {
-		return user;
+	public Long getIdUser() {
+		return idUser;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setIdUser(Long idUser) {
+		this.idUser = idUser;
 	}
 
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
+	}
+
+	
 }

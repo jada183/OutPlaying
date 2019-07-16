@@ -1,5 +1,7 @@
 package com.outplaying.dto;
 
+import java.util.Date;
+
 public class UserDTO {
 
 	private long idUser;
@@ -11,6 +13,8 @@ public class UserDTO {
 	private String email;
 
 	private String role;
+
+	private Date createAcountDate;
 
 	public long getIdUser() {
 		return idUser;
@@ -50,6 +54,14 @@ public class UserDTO {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public Date getCreateAcountDate() {
+		return createAcountDate;
+	}
+
+	public void setCreateAcountDate(Date createAcountDate) {
+		this.createAcountDate = createAcountDate;
 	}
 
 }

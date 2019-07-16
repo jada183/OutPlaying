@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Implementation-Title: OutPlayingBack
-Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Version: 1.0.0-SNAPSHOT
 Built-By: jason.francoquintero
 Implementation-Vendor-Id: BackOutPlaying
 Build-Jdk: 1.8.0_171
