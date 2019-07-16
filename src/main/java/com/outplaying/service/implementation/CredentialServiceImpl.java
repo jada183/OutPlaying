@@ -34,10 +34,10 @@ public class CredentialServiceImpl implements UserDetailsService, ICredentialSer
 
 	@Autowired
 	private ICredentialRepository credentialRepository;
-	
+
 	@Autowired
 	private IUserRepository userRepository;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -52,7 +52,7 @@ public class CredentialServiceImpl implements UserDetailsService, ICredentialSer
 	}
 
 	@Override
-	public CredentialDTO addCredential(CredentialDTO credentialDTO ) {
+	public CredentialDTO addCredential(CredentialDTO credentialDTO) {
 		Credential credential = modelMapper.map(credentialDTO, Credential.class);
 		String password = bCryptPasswordEncoder.encode(credential.getPassword());
 		credential.setPassword(password);
@@ -68,17 +68,22 @@ public class CredentialServiceImpl implements UserDetailsService, ICredentialSer
 			listCredentialDTO.add(modelMapper.map(credential, CredentialDTO.class));
 		}
 		return listCredentialDTO;
-		//return credentialList;
+		// return credentialList;
 
 	}
 
 	@Override
 	public CredentialDTO updateCredential(CredentialDTO credentialDTO) {
-		Credential credential = modelMapper.map(credentialDTO, Credential.class);
-		String password = bCryptPasswordEncoder.encode(credential.getPassword());
-		credential.setPassword(password);
-		return modelMapper.map(credentialRepository.save(credential),
-				CredentialDTO.class);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (!"anonymousUser".equals(authentication.getName())) {
+			Credential credential = modelMapper.map(credentialDTO, Credential.class);
+			String password = bCryptPasswordEncoder.encode(credential.getPassword());
+			credential.setPassword(password);
+			return modelMapper.map(credentialRepository.save(credential), CredentialDTO.class);
+		} else  { 
+			throw new HttpMessageNotReadableException("you cant update these credentials. you dont have authenticated ",
+					new Throwable("you cant update these  credentials., you dont have authenticated "));
+		}
 	}
 
 	@Override
@@ -89,11 +94,10 @@ public class CredentialServiceImpl implements UserDetailsService, ICredentialSer
 			throw new UsernameNotFoundException(username);
 		}
 		List<GrantedAuthority> grantedAuthorities = AuthorityUtils
-            	.commaSeparatedStringToAuthorityList("ROLE_" + credential.getUser().getRole());
+				.commaSeparatedStringToAuthorityList("ROLE_" + credential.getUser().getRole());
 		return new User(credential.getUser().getIdUser().toString(), credential.getPassword(), grantedAuthorities);
 	}
 
-	
 	@Override
 	public CredentialDTO updatePassword(UpdatePasswordDTO updatePasswordDTO) {
 		Optional<com.outplaying.model.User> userOp = userRepository.findById(updatePasswordDTO.getIdUser());
@@ -104,7 +108,7 @@ public class CredentialServiceImpl implements UserDetailsService, ICredentialSer
 
 			if (updatePasswordDTO.getIdUser() == idUserAuth) {
 				Credential credential = credentialRepository.credentialByIdUSer(userOp.get());
-				
+
 				if (bCryptPasswordEncoder.matches(updatePasswordDTO.getLastPassword(), credential.getPassword())) {
 					String password = bCryptPasswordEncoder.encode(updatePasswordDTO.getNewPassword());
 					credential.setPassword(password);
@@ -119,8 +123,7 @@ public class CredentialServiceImpl implements UserDetailsService, ICredentialSer
 				throw new EntityNotFoundException("user with id:  " + updatePasswordDTO.getIdUser() + " doesnt found");
 			}
 		} else {
-			throw new HttpMessageNotReadableException(
-					"you cant update this credentials. you dont have authenticate",
+			throw new HttpMessageNotReadableException("you cant update this credentials. you dont have authenticate",
 					new Throwable("you cant update this credentials,  you dont have authenticate"));
 		}
 

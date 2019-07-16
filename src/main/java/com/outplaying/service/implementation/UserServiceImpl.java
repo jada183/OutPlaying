@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,17 +51,30 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
+	@Transactional
 	public UserDTO addUser(UserDTO userDTO, CredentialDTO credentialDTO) {
 		User user = modelMapper.map(userDTO, User.class);
 		user.setCreateAcountDate(new Date());
 		User userBack = userRepository.save(user);
 
 		Credential credential = modelMapper.map(credentialDTO, Credential.class);
-		String password = bCryptPasswordEncoder.encode(credential.getPassword());
-		credential.setPassword(password);
-		credential.setUser(userBack);
-		credentialRepository.save(credential);
-		return modelMapper.map(userBack, UserDTO.class);
+		Credential credentialEx = credentialRepository.findByusername(credentialDTO.getUsername());
+		if (credentialEx == null ) {
+			if(credential.getPassword().length() > 8) { 
+				String password = bCryptPasswordEncoder.encode(credential.getPassword());
+				credential.setPassword(password);
+				credential.setUser(userBack);
+				credentialRepository.save(credential);
+				return modelMapper.map(userBack, UserDTO.class);
+			} else  { 
+				throw new HttpMessageNotReadableException("the password doesnt have  enough characters ",
+						new Throwable("the password doesnt have  enough characters"));
+			}
+			 
+		} else {
+			throw new HttpMessageNotReadableException("the username is already used ",
+					new Throwable("the username is already used "));
+		}
 	}
 
 	@Override
