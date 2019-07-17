@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.outplaying.constants.Utils;
 import com.outplaying.dto.CredentialDTO;
 import com.outplaying.dto.UserDTO;
 import com.outplaying.model.Credential;
@@ -92,7 +93,7 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public UserDTO updateUser(UserDTO userDTO) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (!"anonymousUser".equals(authentication.getName())) {
+		if (!Utils.anonymousUser.equals(authentication.getName())) {
 			Long idUserAuth = Long.parseLong(authentication.getName());
 			Optional<User> userOp = userRepository.findById(userDTO.getIdUser());
 			if (userOp.isPresent()) {

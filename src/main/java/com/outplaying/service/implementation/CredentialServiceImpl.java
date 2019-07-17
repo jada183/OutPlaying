@@ -4,15 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,6 +22,7 @@ import com.outplaying.model.Credential;
 import com.outplaying.repository.ICredentialRepository;
 import com.outplaying.repository.IUserRepository;
 import com.outplaying.service.ICredentialService;
+import com.outplaying.utils.Validator;
 
 @Service
 public class CredentialServiceImpl implements UserDetailsService, ICredentialService {
@@ -51,6 +48,7 @@ public class CredentialServiceImpl implements UserDetailsService, ICredentialSer
 		return modelMapper.map(credentialRepository.getOne(idCredential), CredentialDTO.class);
 	}
 
+	// Sin uso
 	@Override
 	public CredentialDTO addCredential(CredentialDTO credentialDTO) {
 		Credential credential = modelMapper.map(credentialDTO, Credential.class);
@@ -71,7 +69,7 @@ public class CredentialServiceImpl implements UserDetailsService, ICredentialSer
 		// return credentialList;
 
 	}
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -87,30 +85,27 @@ public class CredentialServiceImpl implements UserDetailsService, ICredentialSer
 	@Override
 	public CredentialDTO updatePassword(UpdatePasswordDTO updatePasswordDTO) {
 		Optional<com.outplaying.model.User> userOp = userRepository.findById(updatePasswordDTO.getIdUser());
+		if (Validator.ValidateIfIdIsOfAuthenticatedUser(updatePasswordDTO.getIdUser())) {
+			Credential credential = credentialRepository.credentialByIdUSer(userOp.get());
 
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (!"anonymousUser".equals(authentication.getName())) {
-			Long idUserAuth = Long.parseLong(authentication.getName());
-
-			if (updatePasswordDTO.getIdUser() == idUserAuth) {
-				Credential credential = credentialRepository.credentialByIdUSer(userOp.get());
-
-				if (bCryptPasswordEncoder.matches(updatePasswordDTO.getLastPassword(), credential.getPassword())) {
+			if (bCryptPasswordEncoder.matches(updatePasswordDTO.getLastPassword(), credential.getPassword())) {
+				if (updatePasswordDTO.getNewPassword().length() >= 8) {
 					String password = bCryptPasswordEncoder.encode(updatePasswordDTO.getNewPassword());
 					credential.setPassword(password);
 					return modelMapper.map(credentialRepository.save(credential), CredentialDTO.class);
 				} else {
 					throw new HttpMessageNotReadableException(
-							"you cant update this credentials. the last password doesnt math",
+							"you cant update this credentials. the min length is 8 characters",
 							new Throwable("you cant update this credentials"));
 				}
-
 			} else {
-				throw new EntityNotFoundException("user with id:  " + updatePasswordDTO.getIdUser() + " doesnt found");
+				throw new HttpMessageNotReadableException(
+						"you cant update this credentials. the last password doesnt math",
+						new Throwable("you cant update this credentials"));
 			}
 		} else {
-			throw new HttpMessageNotReadableException("you cant update this credentials. you dont have authenticate",
-					new Throwable("you cant update this credentials,  you dont have authenticate"));
+			throw new HttpMessageNotReadableException("you cant update this credentials.",
+					new Throwable("you cant update this credentials"));
 		}
 
 	}

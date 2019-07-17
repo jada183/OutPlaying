@@ -10,12 +10,9 @@ import javax.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.outplaying.dto.CommentDTO;
-import com.outplaying.dto.PostDTO;
 import com.outplaying.model.Comment;
 import com.outplaying.model.Post;
 import com.outplaying.model.User;
@@ -23,6 +20,7 @@ import com.outplaying.repository.ICommentRepository;
 import com.outplaying.repository.IPostRepository;
 import com.outplaying.repository.IUserRepository;
 import com.outplaying.service.ICommentService;
+import com.outplaying.utils.Validator;
 
 @Service
 public class ComentServiceImpl implements ICommentService {
@@ -79,39 +77,25 @@ public class ComentServiceImpl implements ICommentService {
 
 	@Override
 	public CommentDTO createComment(CommentDTO commentDTO) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (!"anonymousUser".equals(authentication.getName())) {
-			Long idUserAuth = Long.parseLong(authentication.getName());
-			if (idUserAuth == commentDTO.getIdUser()) {
-				Comment comment = modelMapper.map(commentDTO, Comment.class);
-				comment.setLikes(0);
-				comment.setDate(new Date());
-				return modelMapper.map(commentRepository.save(comment), CommentDTO.class);
-			} else {
-				throw new HttpMessageNotReadableException("you cant save this comment",
-						new Throwable("you cant save comment. the user binding to comment isnt the authenticated"));
-			}
+		if (Validator.ValidateIfIdIsOfAuthenticatedUser(commentDTO.getIdUser())) {
+			Comment comment = modelMapper.map(commentDTO, Comment.class);
+			comment.setLikes(0);
+			comment.setDate(new Date());
+			return modelMapper.map(commentRepository.save(comment), CommentDTO.class);
 		} else {
-			throw new HttpMessageNotReadableException("you cant add comment. you dont have authenticated ",
-					new Throwable("you cant add this comment, you dont have authenticated "));
+			throw new HttpMessageNotReadableException("you cant add comment",
+					new Throwable("you cant add this comment"));
 		}
 	}
 
 	@Override
 	public CommentDTO addLikes(Long idComment) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (!"anonymousUser".equals(authentication.getName())) {
-			Long idUserAuth = Long.parseLong(authentication.getName());
+		if (Validator.isAuthenticated()) {
 			Optional<Comment> commentOp = commentRepository.findById(idComment);
 			if (commentOp.isPresent()) {
-				if (commentOp.get().getUser().getIdUser() == idUserAuth) {
-					Comment comment = commentOp.get();
-					comment.setLikes(comment.getLikes() + 1);
-					return modelMapper.map(commentRepository.save(comment), CommentDTO.class);
-				} else {
-					throw new HttpMessageNotReadableException("you cant update this comment",
-							new Throwable("you cant update this  comment"));
-				}
+				Comment comment = commentOp.get();
+				comment.setLikes(comment.getLikes() + 1);
+				return modelMapper.map(commentRepository.save(comment), CommentDTO.class);
 			} else {
 				throw new EntityNotFoundException("Comment  with id " + idComment + " does not exists");
 			}
@@ -124,23 +108,16 @@ public class ComentServiceImpl implements ICommentService {
 
 	@Override
 	public Integer deleteComment(Long id) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (!"anonymousUser".equals(authentication.getName())) {
-			Long idUserAuth = Long.parseLong(authentication.getName());
-			Optional<Comment> commentOp = commentRepository.findById(id);
-			if (commentOp.isPresent()) {
-				if (commentOp.get().getUser().getIdUser() == idUserAuth) {
-					return commentRepository.removeByIdComment(id);
-				} else {
-					throw new HttpMessageNotReadableException("you cant delete this comment",
-							new Throwable("you cant delete this comment"));
-				}
-			} else { 
-				throw new EntityNotFoundException("comment  with id " + id + " does not exists");
+		Optional<Comment> commentOp = commentRepository.findById(id);
+		if (commentOp.isPresent()) {
+			if (Validator.ValidateIfIdIsOfAuthenticatedUser(commentOp.get().getUser().getIdUser())) {
+				return commentRepository.removeByIdComment(id);
+			} else {
+				throw new HttpMessageNotReadableException("you cant delete this comment",
+						new Throwable("you cant delete this comment"));
 			}
 		} else {
-			throw new HttpMessageNotReadableException("you cant delete this post. you dont have authenticated ",
-					new Throwable("you cant delete this post, you dont have authenticated "));
+			throw new EntityNotFoundException("comment with id " + id + " doesn´t exists");
 		}
 
 	}

@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.outplaying.constants.Utils;
 import com.outplaying.dto.PostDTO;
 import com.outplaying.dto.PostStatusUpdateDTO;
 import com.outplaying.enumerables.PostStatus;
@@ -63,7 +64,7 @@ public class PostServiceImpl implements IPostService {
 		// comprobar que el idUser del post es del usuario autentificado.
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (!"anonymousUser".equals(authentication.getName())) {
+		if (!Utils.anonymousUser.equals(authentication.getName())) {
 			Long idUserAuth = Long.parseLong(authentication.getName());
 
 			if (postDTO.getIdUser() == idUserAuth) {
@@ -87,7 +88,7 @@ public class PostServiceImpl implements IPostService {
 
 		// metodo que comprueba autentificacion
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (!"anonymousUser".equals(authentication.getName())) {
+		if (!Utils.anonymousUser.equals(authentication.getName())) {
 			Long idUserAuth = Long.parseLong(authentication.getName());
 			Optional<Post> postOp = postRepository.findById(postDTO.getIdPost());
 
@@ -122,7 +123,7 @@ public class PostServiceImpl implements IPostService {
 	public PostDTO addLikes(Long idPost) {
 		// metodo que comprueba autentificacion
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (!"anonymousUser".equals(authentication.getName())) {
+		if (!Utils.anonymousUser.equals(authentication.getName())) {
 			Long idUserAuth = Long.parseLong(authentication.getName());
 			Optional<Post> postOp = postRepository.findById(idPost);
 			if (postOp.isPresent()) {
@@ -148,7 +149,7 @@ public class PostServiceImpl implements IPostService {
 	@Override
 	public Integer deleteById(Long id) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (!"anonymousUser".equals(authentication.getName())) {
+		if (!Utils.anonymousUser.equals(authentication.getName())) {
 			Long idUserAuth = Long.parseLong(authentication.getName());
 			Optional<Post> postOp = postRepository.findById(id);
 			if (postOp.isPresent()) {
@@ -221,7 +222,7 @@ public class PostServiceImpl implements IPostService {
 	@Override
 	public List<PostDTO> getByUserId(Long idUser) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (!"anonymousUser".equals(authentication.getName())) { 
+		if (!Utils.anonymousUser.equals(authentication.getName())) { 
 			Long idUserAuth = Long.parseLong(authentication.getName());
 			if(idUserAuth == idUser) { 
 				List<PostDTO> listDTO = new ArrayList<>();
@@ -244,7 +245,7 @@ public class PostServiceImpl implements IPostService {
 	@Override
 	public List<PostDTO> getByManageUserId(Long idUser) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (!"anonymousUser".equals(authentication.getName())) { 
+		if (!Utils.anonymousUser.equals(authentication.getName())) { 
 			Long idUserAuth = Long.parseLong(authentication.getName());
 			if(idUserAuth == idUser) { 
 				List<PostDTO> listDTO = new ArrayList<>();
