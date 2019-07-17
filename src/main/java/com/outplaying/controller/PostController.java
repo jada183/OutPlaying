@@ -33,6 +33,16 @@ public class PostController {
 	public PostDTO getPostById(@PathVariable(value = "idPost") Long idPost) {
 		return this.postService.findPostById(idPost);
 	}
+	
+	@GetMapping(value="/user/{idUser}")
+	public List<PostDTO> getByUserId(@PathVariable(value="idUser") Long idUser) {
+		return this.postService.getByUserId(idUser);
+	}
+	
+	@GetMapping(value="/admin/{idUser}")
+	public List<PostDTO> getByÚserId(@PathVariable(value="idUser")Long idUser) {
+		return this.postService.getByManageUserId(idUser);
+	}
 
 	@PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public PostDTO addPost(@RequestBody PostDTO postDTO) {

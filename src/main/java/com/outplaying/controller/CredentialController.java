@@ -38,10 +38,6 @@ public class CredentialController {
 		return credentialService.addCredential(credentialDTO);
 	}
 
-	@PutMapping(value = "")
-	public CredentialDTO updateCredential(@RequestBody CredentialDTO credentialDTO) {
-		return credentialService.updateCredential(credentialDTO);
-	}
 	@PutMapping(value = "/password")
 	public CredentialDTO updatePassword(@RequestBody UpdatePasswordDTO updatePasswordDTO)  {
 		return credentialService.updatePassword(updatePasswordDTO);

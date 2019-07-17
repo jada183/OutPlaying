@@ -71,21 +71,7 @@ public class CredentialServiceImpl implements UserDetailsService, ICredentialSer
 		// return credentialList;
 
 	}
-
-	@Override
-	public CredentialDTO updateCredential(CredentialDTO credentialDTO) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (!"anonymousUser".equals(authentication.getName())) {
-			Credential credential = modelMapper.map(credentialDTO, Credential.class);
-			String password = bCryptPasswordEncoder.encode(credential.getPassword());
-			credential.setPassword(password);
-			return modelMapper.map(credentialRepository.save(credential), CredentialDTO.class);
-		} else  { 
-			throw new HttpMessageNotReadableException("you cant update these credentials. you dont have authenticated ",
-					new Throwable("you cant update these  credentials., you dont have authenticated "));
-		}
-	}
-
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 

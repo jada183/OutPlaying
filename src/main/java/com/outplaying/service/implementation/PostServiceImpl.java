@@ -218,4 +218,33 @@ public class PostServiceImpl implements IPostService {
 		return -1;
 	}
 
+	@Override
+	public List<PostDTO> getByUserId(Long idUser) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (!"anonymousUser".equals(authentication.getName())) { 
+			Long idUserAuth = Long.parseLong(authentication.getName());
+			if(idUserAuth == idUser) { 
+				List<PostDTO> listDTO = new ArrayList<>();
+				User user = userRepository.getOne(idUser);
+				List<Post> listPost = postRepository.getPostByUser(user);
+				for (Post p : listPost) {
+					listDTO.add(modelMapper.map(p, PostDTO.class)); 
+				}
+				return listDTO;
+			} else {
+				throw new HttpMessageNotReadableException("you cant get this post list",
+						new Throwable("you cant get this post list"));
+			}
+
+		} else  { 
+			throw new EntityNotFoundException("you dont have authenticated ");
+		} 
+	}
+
+	@Override
+	public List<PostDTO> getByManageUserId(Long idUser) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

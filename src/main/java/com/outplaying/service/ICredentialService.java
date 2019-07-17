@@ -15,8 +15,6 @@ public interface ICredentialService {
 	public CredentialDTO addCredential(CredentialDTO credentialDTO);
 
 	public List<CredentialDTO> getAll();
-
-	public CredentialDTO updateCredential(CredentialDTO credentialDTO);
 	
 	public UserDetails loadUserByUsername(String username);
 	

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jayway.jsonpath.internal.Path;
 import com.outplaying.dto.CommentDTO;
 import com.outplaying.service.ICommentService;
 
