@@ -24,6 +24,7 @@ import com.outplaying.model.User;
 import com.outplaying.repository.ICredentialRepository;
 import com.outplaying.repository.IUserRepository;
 import com.outplaying.service.IUserService;
+import com.outplaying.utils.Validator;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -60,18 +61,18 @@ public class UserServiceImpl implements IUserService {
 
 		Credential credential = modelMapper.map(credentialDTO, Credential.class);
 		Credential credentialEx = credentialRepository.findByusername(credentialDTO.getUsername());
-		if (credentialEx == null ) {
-			if(credential.getPassword().length() > 8) { 
+		if (credentialEx == null) {
+			if (credential.getPassword().length() > 8) {
 				String password = bCryptPasswordEncoder.encode(credential.getPassword());
 				credential.setPassword(password);
 				credential.setUser(userBack);
 				credentialRepository.save(credential);
 				return modelMapper.map(userBack, UserDTO.class);
-			} else  { 
+			} else {
 				throw new HttpMessageNotReadableException("the password doesnt have  enough characters ",
 						new Throwable("the password doesnt have  enough characters"));
 			}
-			 
+
 		} else {
 			throw new HttpMessageNotReadableException("the username is already used ",
 					new Throwable("the username is already used "));
@@ -92,27 +93,20 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public UserDTO updateUser(UserDTO userDTO) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (!Utils.anonymousUser.equals(authentication.getName())) {
-			Long idUserAuth = Long.parseLong(authentication.getName());
-			Optional<User> userOp = userRepository.findById(userDTO.getIdUser());
-			if (userOp.isPresent()) {
-				if (userOp.get().getIdUser() == idUserAuth) {
-					User userBack = userOp.get();
-					userBack.setName(userDTO.getName());
-					userBack.setSurname(userDTO.getSurname());
-					userBack.setEmail(userDTO.getEmail());
-					return modelMapper.map(userRepository.save(userBack), UserDTO.class);
-				} else {
-					throw new HttpMessageNotReadableException("you cant update this user ",
-							new Throwable("you cant update this user "));
-				}
+		Optional<User> userOp = userRepository.findById(userDTO.getIdUser());
+		if (userOp.isPresent()) {
+			if (Validator.ValidateIfIdIsOfAuthenticatedUser(userOp.get().getIdUser())) {
+				User userBack = userOp.get();
+				userBack.setName(userDTO.getName());
+				userBack.setSurname(userDTO.getSurname());
+				userBack.setEmail(userDTO.getEmail());
+				return modelMapper.map(userRepository.save(userBack), UserDTO.class);
 			} else {
-				throw new EntityNotFoundException("User  with id " + userDTO.getIdUser() + " does not exists");
+				throw new HttpMessageNotReadableException("you cant update this user. you dont have authenticated ",
+						new Throwable("you cant update this user, you dont have authenticated "));
 			}
 		} else {
-			throw new HttpMessageNotReadableException("you cant update this user. you dont have authenticated ",
-					new Throwable("you cant update this user, you dont have authenticated "));
+			throw new EntityNotFoundException("User with id " + userDTO.getIdUser() + " does not exists");
 		}
 	}
 
