@@ -10,11 +10,8 @@ import javax.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import com.outplaying.constants.Utils;
 import com.outplaying.dto.PostDTO;
 import com.outplaying.dto.PostStatusUpdateDTO;
 import com.outplaying.enumerables.PostStatus;
@@ -23,6 +20,7 @@ import com.outplaying.model.User;
 import com.outplaying.repository.IPostRepository;
 import com.outplaying.repository.IUserRepository;
 import com.outplaying.service.IPostService;
+import com.outplaying.utils.Validator;
 
 @Service
 public class PostServiceImpl implements IPostService {
@@ -62,109 +60,74 @@ public class PostServiceImpl implements IPostService {
 		// return modelMapper.map(postRepository.save(post), PostDTO.class);
 
 		// comprobar que el idUser del post es del usuario autentificado.
-
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (!Utils.anonymousUser.equals(authentication.getName())) {
-			Long idUserAuth = Long.parseLong(authentication.getName());
-
-			if (postDTO.getIdUser() == idUserAuth) {
-				Post post = modelMapper.map(postDTO, Post.class);
-				post.setLikes(0);
-				post.setStatus(postDTO.getStatus());
-				post.setDate(new Date());
-				return modelMapper.map(postRepository.save(post), PostDTO.class);
-			} else {
-				throw new HttpMessageNotReadableException("you cant save post",
-						new Throwable("you cant save post. the user binding to post isnt the authenticated"));
-			}
+		if (Validator.ValidateIfIdIsOfAuthenticatedUser(postDTO.getIdUser())) {
+			Post post = modelMapper.map(postDTO, Post.class);
+			post.setLikes(0);
+			post.setStatus(postDTO.getStatus());
+			post.setDate(new Date());
+			return modelMapper.map(postRepository.save(post), PostDTO.class);
 		} else {
-			throw new HttpMessageNotReadableException("you cant add post. you dont have authenticated ",
-					new Throwable("you cant add this post, you dont have authenticated "));
+			throw new HttpMessageNotReadableException("you cant save post",
+					new Throwable("you cant save post. the user binding to post isnt the authenticated"));
 		}
 	}
 
 	@Override
 	public PostDTO updatePost(PostDTO postDTO) {
-
-		// metodo que comprueba autentificacion
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (!Utils.anonymousUser.equals(authentication.getName())) {
-			Long idUserAuth = Long.parseLong(authentication.getName());
-			Optional<Post> postOp = postRepository.findById(postDTO.getIdPost());
-
-			if (postOp.isPresent()) {
+		Optional<Post> postOp = postRepository.findById(postDTO.getIdPost());
+		if (postOp.isPresent()) {
+			if (Validator.ValidateIfIdIsOfAuthenticatedUser(postOp.get().getUser().getIdUser())) {
 				if (PostStatus.Pendiente.equals(postOp.get().getStatus())) {
-					if (postOp.get().getUser().getIdUser() == idUserAuth) {
-						Post post = postOp.get();
-						post.setPostName(postDTO.getPostName());
-						post.setPicturesURL(postDTO.getPicturesURL());
-						post.setContentText(postDTO.getContentText());
-						return modelMapper.map(postRepository.save(post), PostDTO.class);
-					} else {
-						throw new HttpMessageNotReadableException("you cant update this post",
-								new Throwable("you cant update this post "));
-					}
-
+					Post post = postOp.get();
+					post.setPostName(postDTO.getPostName());
+					post.setPicturesURL(postDTO.getPicturesURL());
+					post.setContentText(postDTO.getContentText());
+					return modelMapper.map(postRepository.save(post), PostDTO.class);
 				} else {
-					throw new HttpMessageNotReadableException("you cant udpate post posted",
+					throw new HttpMessageNotReadableException("you cant udpate post posted or rejected",
 							new Throwable("you cant udpate post posted"));
 				}
 			} else {
-				throw new EntityNotFoundException("Post  with id " + postDTO.getIdPost() + " does not exists");
+				throw new HttpMessageNotReadableException("you cant update this post",
+						new Throwable("you cant update this post "));
 			}
 		} else {
-			throw new HttpMessageNotReadableException("you cant update this post. you dont have authenticated ",
-					new Throwable("you cant update this post, you dont have authenticated "));
+			throw new EntityNotFoundException("Post with id " + postDTO.getIdPost() + "does not exists");
 		}
 
 	}
 
 	@Override
 	public PostDTO addLikes(Long idPost) {
-		// metodo que comprueba autentificacion
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (!Utils.anonymousUser.equals(authentication.getName())) {
-			Long idUserAuth = Long.parseLong(authentication.getName());
+		if (Validator.isAuthenticated()) {
 			Optional<Post> postOp = postRepository.findById(idPost);
 			if (postOp.isPresent()) {
-				if (postOp.get().getUser().getIdUser() == idUserAuth) {
-					Post post = postOp.get();
-					post.setLikes(post.getLikes() + 1);
-					return modelMapper.map(postRepository.save(post), PostDTO.class);
-				} else {
-					throw new HttpMessageNotReadableException("you cant update this post",
-							new Throwable("you cant update this post "));
-				}
+				Post post = postOp.get();
+				post.setLikes(post.getLikes() + 1);
+				return modelMapper.map(postRepository.save(post), PostDTO.class);
 
 			} else {
 				throw new EntityNotFoundException("Post  with id " + idPost + " does not exists");
 			}
 		} else {
-			throw new HttpMessageNotReadableException("you cant give like to this post. you dont have authenticated ",
-					new Throwable("you cant give like to this post, you dont have authenticated "));
+			throw new HttpMessageNotReadableException("you cant add like to  this post",
+					new Throwable("you cant add like to this post "));
 		}
 
 	}
 
 	@Override
 	public Integer deleteById(Long id) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (!Utils.anonymousUser.equals(authentication.getName())) {
-			Long idUserAuth = Long.parseLong(authentication.getName());
-			Optional<Post> postOp = postRepository.findById(id);
-			if (postOp.isPresent()) {
-				if (postOp.get().getUser().getIdUser() == idUserAuth) {
-					return postRepository.removeByIdPost(id);
-				} else {
-					throw new HttpMessageNotReadableException("you cant delete this post",
-							new Throwable("you cant delete this post"));
-				}
+		Optional<Post> postOp = postRepository.findById(id);
+		if (postOp.isPresent()) {
+			if (Validator.ValidateIfIdIsOfAuthenticatedUser(postOp.get().getUser().getIdUser())) {
+				return postRepository.removeByIdPost(id);
 			} else {
-				throw new EntityNotFoundException("Post  with id " + id + " does not exists");
+				throw new HttpMessageNotReadableException("you cant delete this post",
+						new Throwable("you cant delete this post"));
 			}
 		} else {
-			throw new HttpMessageNotReadableException("you cant delete this post. you dont have authenticated ",
-					new Throwable("you cant delete this post, you dont have authenticated "));
+			throw new EntityNotFoundException("Post with id " + id + " does not exists");
 		}
 
 	}
@@ -221,48 +184,35 @@ public class PostServiceImpl implements IPostService {
 
 	@Override
 	public List<PostDTO> getByUserId(Long idUser) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (!Utils.anonymousUser.equals(authentication.getName())) { 
-			Long idUserAuth = Long.parseLong(authentication.getName());
-			if(idUserAuth == idUser) { 
-				List<PostDTO> listDTO = new ArrayList<>();
-				User user = userRepository.getOne(idUser);
-				List<Post> listPost = postRepository.getPostByUser(user);
-				for (Post p : listPost) {
-					listDTO.add(modelMapper.map(p, PostDTO.class)); 
-				}
-				return listDTO;
-			} else {
-				throw new HttpMessageNotReadableException("you cant get this post list",
-						new Throwable("you cant get this post list"));
-			}
 
-		} else  { 
-			throw new EntityNotFoundException("you dont have authenticated ");
-		} 
+		if (Validator.ValidateIfIdIsOfAuthenticatedUser(idUser)) {
+			List<PostDTO> listDTO = new ArrayList<>();
+			User user = userRepository.getOne(idUser);
+			List<Post> listPost = postRepository.getPostByUser(user);
+			for (Post p : listPost) {
+				listDTO.add(modelMapper.map(p, PostDTO.class));
+			}
+			return listDTO;
+		} else {
+			throw new HttpMessageNotReadableException("you cant get this post list",
+					new Throwable("you cant get this post list"));
+		}
 	}
 
 	@Override
 	public List<PostDTO> getByManageUserId(Long idUser) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (!Utils.anonymousUser.equals(authentication.getName())) { 
-			Long idUserAuth = Long.parseLong(authentication.getName());
-			if(idUserAuth == idUser) { 
-				List<PostDTO> listDTO = new ArrayList<>();
-				User user = userRepository.getOne(idUser);
-				List<Post> listPost = postRepository.getPostByUserManager(user);
-				for (Post p : listPost) {
-					listDTO.add(modelMapper.map(p, PostDTO.class)); 
-				}
-				return listDTO;
-			} else {
-				throw new HttpMessageNotReadableException("you cant get this post list",
-						new Throwable("you cant get this post list"));
+		if (Validator.ValidateIfIdIsOfAuthenticatedUser(idUser)) {
+			List<PostDTO> listDTO = new ArrayList<>();
+			User user = userRepository.getOne(idUser);
+			List<Post> listPost = postRepository.getPostByUserManager(user);
+			for (Post p : listPost) {
+				listDTO.add(modelMapper.map(p, PostDTO.class));
 			}
-
-		} else  { 
-			throw new EntityNotFoundException("you dont have authenticated ");
-		} 
+			return listDTO;
+		} else {
+			throw new HttpMessageNotReadableException("you cant get this post list",
+					new Throwable("you cant get this post list"));
+		}
 	}
 
 }
