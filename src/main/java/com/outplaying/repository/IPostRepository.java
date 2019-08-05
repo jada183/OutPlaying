@@ -19,11 +19,10 @@ public interface IPostRepository extends JpaRepository<Post, Long> {
 	@Transactional
 	public Integer removeByIdPost(Long idPost);
 	
-	@Transactional
 	@Query("Select p from Post p where p.user =?1")
 	public List<Post> getPostByUser(User user);
 	
-	@Transactional
+
 	@Query("Select p from Post p where p.userManager =?1")
 	public List<Post> getPostByUserManager(User user);
 }
