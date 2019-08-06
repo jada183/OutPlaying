@@ -43,6 +43,9 @@ public class User {
 	@Temporal(TemporalType.DATE)
 	@Column(name="create_acount_date", nullable = false)
 	private Date createAcountDate;
+	
+	@Column(name="url_img")
+	private String urlImg;
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "user")
 	private List<Post> userPost = new ArrayList<>();
@@ -112,6 +115,15 @@ public class User {
 
 	public void setCreateAcountDate(Date createAcountDate) {
 		this.createAcountDate = createAcountDate;
+	}
+	
+	
+	public String getUrlImg() {
+		return urlImg;
+	}
+
+	public void setUrlImg(String urlImg) {
+		this.urlImg = urlImg;
 	}
 
 	public List<Post> getUserPost() {

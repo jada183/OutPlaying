@@ -15,6 +15,8 @@ public class UserDTO {
 	private String role;
 
 	private Date createAcountDate;
+	
+	private String urlImg;
 
 	public long getIdUser() {
 		return idUser;
@@ -62,6 +64,14 @@ public class UserDTO {
 
 	public void setCreateAcountDate(Date createAcountDate) {
 		this.createAcountDate = createAcountDate;
+	}
+
+	public String getUrlImg() {
+		return urlImg;
+	}
+
+	public void setUrlImg(String urlImg) {
+		this.urlImg = urlImg;
 	}
 
 }

@@ -1,6 +1,6 @@
 INSERT INTO user(name, surname, email, role, create_acount_date) VALUES('Jason', 'Franco', 'jada183.jf@gmail.com', 'ADMIN', '2019-05-03');
 
-INSERT INTO user(name, surname, email, role, create_acount_date) VALUES('Danilo', 'Quintero', 'jasondq1933@gmail.com', 'USER', '2019-05-03');
+INSERT INTO user(name, surname, email, role, create_acount_date, url_img) VALUES('Danilo', 'Quintero', 'jasondq1933@gmail.com', 'USER', '2019-05-03', 'danilo1993.png');
 
 INSERT INTO user_credentials(password, username, id_user) VALUES('$2a$10$9NJCpFVtctuciVtWSHsGWeqL.KLTh4X1ePDEnGpL4BhjzWWIJNtsa', 'jason1993', '1'); 
 INSERT INTO user_credentials(password, username, id_user) VALUES('$2a$10$DYAJD6fVnNOmqh.RtRcJEu0zWMzVPoz237mDq20rz9R0gCcW14nmG', 'danilo1993', '2');

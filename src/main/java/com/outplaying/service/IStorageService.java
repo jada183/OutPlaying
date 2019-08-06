@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public interface IStorageService {
-	public void store(MultipartFile file);
+	public void storeTemporaryProfileImage(MultipartFile file);
 	
 	public Resource loadFile(String filename);
 	

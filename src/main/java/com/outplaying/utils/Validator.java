@@ -24,6 +24,7 @@ public class Validator {
 	public static boolean isAuthenticated() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (!Utils.anonymousUser.equals(authentication.getName())) {
+			System.out.println(authentication.getName());
 			return true;
 		} else {
 			return false;

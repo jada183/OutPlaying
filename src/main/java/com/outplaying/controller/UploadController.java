@@ -34,27 +34,17 @@ public class UploadController {
 	@PostMapping("")
 	public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file) {
 		String message = "";
-		System.out.print(file.getOriginalFilename());
 		try {
-			storageService.store(file);
-			files.add(file.getOriginalFilename());
-
+			storageService.storeTemporaryProfileImage(file);
 			message = "You succefully uploaded" + file.getOriginalFilename() + "!";
 			return ResponseEntity.status(HttpStatus.OK).body(message);
+			
 		} catch (Exception e) {
 			message = "FAIL to upload" + file.getOriginalFilename() + "!";
 			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
 		}
 	}
 
-//	@GetMapping("")
-//	public ResponseEntity<List<String>> getListFiles(Model model) {
-//		List<String> filesNames = files
-//				.stream().map(fileName -> MvcUriComponentsBuilder
-//						.fromMethodName(UploadController.class, "getFile", fileName).build().toString())
-//				.collect(Collectors.toList());
-//		return ResponseEntity.ok().body(filesNames);
-//	}
 
 	@GetMapping("/{filename}")
 	public ResponseEntity<Resource> getFile(@PathVariable String filename) {
