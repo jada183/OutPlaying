@@ -1,5 +1,6 @@
 package com.outplaying.service.implementation;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,6 +12,8 @@ import javax.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,7 @@ import com.outplaying.model.Credential;
 import com.outplaying.model.User;
 import com.outplaying.repository.ICredentialRepository;
 import com.outplaying.repository.IUserRepository;
+import com.outplaying.service.IStorageService;
 import com.outplaying.service.IUserService;
 import com.outplaying.utils.Validator;
 
@@ -36,6 +40,9 @@ public class UserServiceImpl implements IUserService {
 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	@Autowired 
+	private IStorageService storageService;
 
 	@Override
 	public UserDTO findUserById(Long idUser) {
@@ -93,10 +100,23 @@ public class UserServiceImpl implements IUserService {
 		Optional<User> userOp = userRepository.findById(userDTO.getIdUser());
 		if (userOp.isPresent()) {
 			if (Validator.ValidateIfIdIsOfAuthenticatedUser(userOp.get().getIdUser())) {
+				
+				Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+				User user = userRepository.getOne(Long.parseLong(authentication.getName()));
+				Credential credential = credentialRepository.credentialByIdUSer(user);
 				User userBack = userOp.get();
 				userBack.setName(userDTO.getName());
 				userBack.setSurname(userDTO.getSurname());
 				userBack.setEmail(userDTO.getEmail());
+				System.out.println(userDTO.getUrlImg());
+				String[] userDTOImgURLSplitting = userDTO.getUrlImg().split("\\.");
+				try {
+					this.storageService.saveTempImg(credential.getUsername());
+					userBack.setUrlImg(credential.getUsername() + "."+ userDTOImgURLSplitting[1]);
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				return modelMapper.map(userRepository.save(userBack), UserDTO.class);
 			} else {
 				throw new HttpMessageNotReadableException("you cant update this user. you dont have authenticated ",

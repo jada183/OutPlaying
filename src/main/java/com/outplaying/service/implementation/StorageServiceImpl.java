@@ -1,10 +1,15 @@
 package com.outplaying.service.implementation;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -25,7 +30,8 @@ import com.outplaying.utils.Validator;
 @Service
 public class StorageServiceImpl implements IStorageService {
 
-	private final Path rootLocation = Paths.get("temp-storage");
+	private final Path rootLocationTem = Paths.get("temp-storage");
+	private final Path rootLocationProfileImg = Paths.get("profile-img-storage");
 	
 	@Autowired
 	private IUserRepository userRepository;
@@ -46,11 +52,9 @@ public class StorageServiceImpl implements IStorageService {
 				// para obtener la extension de la imagen.
 				String [] extension = file.getOriginalFilename().split("\\.");
 				String imageName = credential.getUsername()+  "." +  extension[1];
-				File f =  new File("./upload-dir/" + imageName);
-				if(f.exists()) { 
-					f.delete();
-				}
-				Files.copy(file.getInputStream(), this.rootLocation.resolve(imageName));
+				// metodo que elimina la imagen actual de perfil si se encuentra.
+				this.deleteImgWithSameName(credential.getUsername(), "./temp-storage/");
+				Files.copy(file.getInputStream(), this.rootLocationTem.resolve(imageName));
 			} else {
 				throw new HttpMessageNotReadableException("you cant add  this image",
 						new Throwable("you cant add  this image"));
@@ -64,7 +68,7 @@ public class StorageServiceImpl implements IStorageService {
 	@Override
 	public Resource loadFile(String filename) {
 		try {
-			Path file = rootLocation.resolve(filename);
+			Path file =  rootLocationProfileImg.resolve(filename);
 			Resource resource = new UrlResource(file.toUri());
 			if (resource.exists() || resource.isReadable()) {
 				return resource;
@@ -73,6 +77,58 @@ public class StorageServiceImpl implements IStorageService {
 			}
 		} catch (MalformedURLException e) {
 			throw new RuntimeException("FAIL!");
+		}
+	}
+	
+	@Override
+	public void saveTempImg(String name) throws FileNotFoundException  {
+		File f =  new File("./temp-storage/" +  name + ".png");
+		File f2 =  new File("./temp-storage/" +  name +  ".jpg");
+		
+		if(f.exists()) { 
+			InputStream in = new FileInputStream(f);
+			try {
+				this.deleteImgWithSameName(name, "./profile-img-storage/");
+				Files.copy(in , this.rootLocationProfileImg.resolve(f.getName()));
+				in.close();
+				f.delete();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if(f2.exists()) { 
+			InputStream in = new FileInputStream(f2);
+			try {
+				this.deleteImgWithSameName(name, "./profile-img-storage/");
+				Files.copy(in , this.rootLocationProfileImg.resolve(f2.getName()));
+				in.close();
+				f2.delete();
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
+	}
+	
+	private void deleteImgWithSameName(String name, String rootDirectory) { 
+		File f =  new File(rootDirectory +  name + ".png");
+		File f2 =  new File(rootDirectory +  name +  ".jpg");
+		if(f.exists()) { 
+			f.delete();
+		}
+		if(f2.exists()) { 
+			f2.delete();
+		}
+	}
+	
+	private void deleteFile(String fullName, String rootDirectory) {
+		File f =  new File(rootDirectory +  fullName);
+		if(f.exists()) { 
+			f.delete();
 		}
 	}
 
