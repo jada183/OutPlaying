@@ -108,11 +108,10 @@ public class UserServiceImpl implements IUserService {
 				userBack.setName(userDTO.getName());
 				userBack.setSurname(userDTO.getSurname());
 				userBack.setEmail(userDTO.getEmail());
-				System.out.println(userDTO.getUrlImg());
-				String[] userDTOImgURLSplitting = userDTO.getUrlImg().split("\\.");
+				
 				try {
-					this.storageService.saveTempImg(credential.getUsername());
-					userBack.setUrlImg(credential.getUsername() + "."+ userDTOImgURLSplitting[1]);
+					this.storageService.saveTempImg(userDTO.getUrlImg());
+					userBack.setUrlImg(userDTO.getUrlImg());
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

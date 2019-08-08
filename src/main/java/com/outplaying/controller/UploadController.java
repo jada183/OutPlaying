@@ -29,11 +29,11 @@ public class UploadController {
 
 	@PostMapping("/temp")
 	public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file) {
+		String fileName = "";
 		String message = "";
 		try {
-			storageService.storeTemporaryProfileImage(file);
-			message = "You succefully uploaded" + file.getOriginalFilename() + "!";
-			return ResponseEntity.status(HttpStatus.OK).body(message);
+			fileName = storageService.storeTemporaryProfileImage(file);
+			return ResponseEntity.status(HttpStatus.OK).body(fileName);
 			
 		} catch (Exception e) {
 			message = "FAIL to upload" + file.getOriginalFilename() + "!";

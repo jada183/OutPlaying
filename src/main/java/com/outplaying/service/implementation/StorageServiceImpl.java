@@ -40,7 +40,7 @@ public class StorageServiceImpl implements IStorageService {
 	private ICredentialRepository credentialRepository;
 
 	@Override
-	public void storeTemporaryProfileImage(MultipartFile file) {
+	public String storeTemporaryProfileImage(MultipartFile file) {
 		try {
 			if(Validator.isAuthenticated()) { 
 				// tras comprobar si se esta autentificado, saco el valor de las credenciales obteniendo primero el usuario con el id de usuario
@@ -55,6 +55,7 @@ public class StorageServiceImpl implements IStorageService {
 				// metodo que elimina la imagen actual de perfil si se encuentra.
 				this.deleteImgWithSameName(credential.getUsername(), "./temp-storage/");
 				Files.copy(file.getInputStream(), this.rootLocationTem.resolve(imageName));
+				return imageName;
 			} else {
 				throw new HttpMessageNotReadableException("you cant add  this image",
 						new Throwable("you cant add  this image"));
@@ -82,13 +83,13 @@ public class StorageServiceImpl implements IStorageService {
 	
 	@Override
 	public void saveTempImg(String name) throws FileNotFoundException  {
-		File f =  new File("./temp-storage/" +  name + ".png");
-		File f2 =  new File("./temp-storage/" +  name +  ".jpg");
+		File f =  new File("./temp-storage/" +  name );
 		
 		if(f.exists()) { 
 			InputStream in = new FileInputStream(f);
 			try {
-				this.deleteImgWithSameName(name, "./profile-img-storage/");
+				String [] splitName =  name.split("\\.");
+				this.deleteImgWithSameName(splitName[0], "./profile-img-storage/");
 				Files.copy(in , this.rootLocationProfileImg.resolve(f.getName()));
 				in.close();
 				f.delete();
@@ -97,21 +98,6 @@ public class StorageServiceImpl implements IStorageService {
 				e.printStackTrace();
 			}
 		}
-		if(f2.exists()) { 
-			InputStream in = new FileInputStream(f2);
-			try {
-				this.deleteImgWithSameName(name, "./profile-img-storage/");
-				Files.copy(in , this.rootLocationProfileImg.resolve(f2.getName()));
-				in.close();
-				f2.delete();
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		}
-		
 	}
 	
 	private void deleteImgWithSameName(String name, String rootDirectory) { 
@@ -125,11 +111,4 @@ public class StorageServiceImpl implements IStorageService {
 		}
 	}
 	
-	private void deleteFile(String fullName, String rootDirectory) {
-		File f =  new File(rootDirectory +  fullName);
-		if(f.exists()) { 
-			f.delete();
-		}
-	}
-
 }
