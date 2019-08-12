@@ -15,4 +15,6 @@ public interface IStorageService {
 	
 	public void saveTempImg (String name) throws FileNotFoundException;
 	
+	public String storeTemporaryPostImage(MultipartFile file);
+	
 }

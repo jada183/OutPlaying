@@ -100,6 +100,33 @@ public class StorageServiceImpl implements IStorageService {
 		}
 	}
 	
+	@Override
+	public String storeTemporaryPostImage(MultipartFile file) {
+		try {
+			if(Validator.isAuthenticated()) { 
+				// tras comprobar si se esta autentificado, saco el valor de las credenciales obteniendo primero el usuario con el id de usuario
+				//  que almace la clase authentication y a partir de este  saco las credenciales para guardar el nombre del archivo con el userName
+				// que es unique.asi guardo una imagen de usuario para cada uno.
+				Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+				User user = userRepository.getOne(Long.parseLong(authentication.getName()));
+				Credential credential = credentialRepository.credentialByIdUSer(user);
+				// para obtener la extension de la imagen.
+				String [] extension = file.getOriginalFilename().split("\\.");
+				String imageName = credential.getUsername()+  "." +  extension[1];
+				// metodo que elimina la imagen actual de perfil si se encuentra.
+				this.deleteImgWithSameName(credential.getUsername(), "./temp-storage/");
+				Files.copy(file.getInputStream(), this.rootLocationTem.resolve(imageName));
+				return imageName;
+			} else {
+				throw new HttpMessageNotReadableException("you cant add  this image",
+						new Throwable("you cant add  this image"));
+			}
+		} catch (Exception e) {
+			throw new RuntimeException("FAIL!");
+		}
+		
+	}
+		
 	private void deleteImgWithSameName(String name, String rootDirectory) { 
 		File f =  new File(rootDirectory +  name + ".png");
 		File f2 =  new File(rootDirectory +  name +  ".jpg");
@@ -110,5 +137,6 @@ public class StorageServiceImpl implements IStorageService {
 			f2.delete();
 		}
 	}
+
 	
 }
