@@ -11,10 +11,12 @@ import org.springframework.web.multipart.MultipartFile;
 public interface IStorageService {
 	public String storeTemporaryProfileImage(MultipartFile file);
 	
-	public Resource loadFile(String filename);
+	public Resource loadFileProfileImg(String filename);
 	
 	public void saveTempImg (String name) throws FileNotFoundException;
 	
 	public String storeTemporaryPostImage(MultipartFile file);
+	
+	public Resource loadFilePostImg(String filename);
 	
 }

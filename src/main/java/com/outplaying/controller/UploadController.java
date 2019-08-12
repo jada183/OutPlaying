@@ -27,7 +27,7 @@ public class UploadController {
 
 	List<String> files = new ArrayList<String>();
 
-	@PostMapping("/temp")
+	@PostMapping("profile-img/temp")
 	public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file) {
 		String fileName = "";
 		String message = "";
@@ -40,12 +40,32 @@ public class UploadController {
 			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
 		}
 	}
+	@PostMapping("post-img/temp")
+	public ResponseEntity<String> handleFileUploadPost(@RequestParam("file") MultipartFile file) {
+		String fileName = "";
+		String message = "";
+		try {
+			fileName = storageService.storeTemporaryPostImage(file);
+			return ResponseEntity.status(HttpStatus.OK).body(fileName);
+			
+		} catch (Exception e) {
+			message = "FAIL to upload" + file.getOriginalFilename() + "!";
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
+		}
+	}
 
 
-	@GetMapping("/{filename}")
-	public ResponseEntity<Resource> getFile(@PathVariable String filename) {
-		System.out.println("hola mundo");
-		Resource file = storageService.loadFile(filename);
+	@GetMapping("profile-img/{filename}")
+	public ResponseEntity<Resource> getFileProfile(@PathVariable String filename) {
+
+		Resource file = storageService.loadFileProfileImg(filename);
+		return ResponseEntity.ok()
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+				.body(file);
+	}
+	@GetMapping("post-img/{filename}")
+	public ResponseEntity<Resource> getFilePost(@PathVariable String filename) {
+		Resource file = storageService.loadFilePostImg(filename);
 		return ResponseEntity.ok()
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
 				.body(file);

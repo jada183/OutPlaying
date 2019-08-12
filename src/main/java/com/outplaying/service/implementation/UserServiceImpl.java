@@ -100,10 +100,7 @@ public class UserServiceImpl implements IUserService {
 		Optional<User> userOp = userRepository.findById(userDTO.getIdUser());
 		if (userOp.isPresent()) {
 			if (Validator.ValidateIfIdIsOfAuthenticatedUser(userOp.get().getIdUser())) {
-				
-				Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-				User user = userRepository.getOne(Long.parseLong(authentication.getName()));
-				Credential credential = credentialRepository.credentialByIdUSer(user);
+
 				User userBack = userOp.get();
 				userBack.setName(userDTO.getName());
 				userBack.setSurname(userDTO.getSurname());
