@@ -22,9 +22,9 @@ public class PostDTO {
 	
 	private PostStatus status;
 
-	private Long IdUser;
+	private Long idUser;
 	
-	private Long IdUserManager;
+	private Long idUserManager;
 	
 	public Long getIdPost() {
 		return idPost;
@@ -91,19 +91,19 @@ public class PostDTO {
 	}
 
 	public Long getIdUser() {
-		return IdUser;
+		return idUser;
 	}
 
 	public void setIdUser(Long idUser) {
-		IdUser = idUser;
+		this.idUser = idUser;
 	}
 
 	public Long getIdUserManager() {
-		return IdUserManager;
+		return idUserManager;
 	}
 
-	public void setIdUserManager(Long idUserManager) {
-		IdUserManager = idUserManager;
+	public void setdUserManager(Long idUserManager) {
+		this.idUserManager = idUserManager;
 	}
 
 }

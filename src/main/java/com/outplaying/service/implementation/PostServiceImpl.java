@@ -1,5 +1,6 @@
 package com.outplaying.service.implementation;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,6 +21,7 @@ import com.outplaying.model.User;
 import com.outplaying.repository.IPostRepository;
 import com.outplaying.repository.IUserRepository;
 import com.outplaying.service.IPostService;
+import com.outplaying.service.IStorageService;
 import com.outplaying.utils.Validator;
 
 @Service
@@ -32,6 +34,9 @@ public class PostServiceImpl implements IPostService {
 
 	@Autowired
 	private IUserRepository userRepository;
+	
+	@Autowired
+	private IStorageService storageService;
 
 	@Override
 	public PostDTO findPostById(Long id) {
@@ -80,8 +85,16 @@ public class PostServiceImpl implements IPostService {
 				if (PostStatus.Pendiente.equals(postOp.get().getStatus())) {
 					Post post = postOp.get();
 					post.setPostName(postDTO.getPostName());
-					post.setPicturesURL(postDTO.getPicturesURL());
 					post.setContentText(postDTO.getContentText());
+					try {
+						storageService.saveTempImgPostImg(postDTO.getPicturesURL(),post.getIdPost().toString());
+						String [] nameSpliting = postDTO.getPicturesURL().split("\\.");
+						String fileName = nameSpliting[0] + post.getIdPost().toString() + "." + nameSpliting[1];
+						post.setPicturesURL(fileName);
+						
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					}
 					return modelMapper.map(postRepository.save(post), PostDTO.class);
 				} else {
 					throw new HttpMessageNotReadableException("you cant udpate post posted or rejected",

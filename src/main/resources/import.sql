@@ -5,8 +5,8 @@ INSERT INTO user(name, surname, email, role, create_acount_date, url_img) VALUES
 INSERT INTO user_credentials(password, username, id_user) VALUES('$2a$10$9NJCpFVtctuciVtWSHsGWeqL.KLTh4X1ePDEnGpL4BhjzWWIJNtsa', 'jason1993', '1'); 
 INSERT INTO user_credentials(password, username, id_user) VALUES('$2a$10$DYAJD6fVnNOmqh.RtRcJEu0zWMzVPoz237mDq20rz9R0gCcW14nmG', 'danilo1993', '2');
 
-INSERT INTO post(content_text, date, likes, manage_date, picture, post_name, status, id_user, id_user_manager) VALUES('esto es el post de prueba inicial', '2019-05-03', '0', '2019-05-03', 'postInicial.png', 'post prueba', '2', '2', '1');
-INSERT INTO post(content_text, date, likes, manage_date, picture, post_name, status, id_user, id_user_manager) VALUES('esto es el post de prueba inicial', '2019-05-03', '0', '2019-05-03', 'segundoPost.png', 'post prueba2', '1', '2', '1');
+INSERT INTO post(content_text, date, likes, manage_date, picture, post_name, status, id_user, id_user_manager) VALUES('esto es el post de prueba inicial', '2019-05-03', '0', '2019-05-03', 'danilo1993Post1.jpg', 'post prueba', '2', '2', '1');
+INSERT INTO post(content_text, date, likes, manage_date, picture, post_name, status, id_user, id_user_manager) VALUES('esto es el post de prueba inicial', '2019-05-03', '0', '2019-05-03', 'danilo1993Post2.png', 'post prueba2', '1', '2', '1');
 
 
 

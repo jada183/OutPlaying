@@ -101,7 +101,7 @@ public class StorageServiceImpl implements IStorageService {
 	}
 
 	@Override
-	public void saveTempImg(String name) throws FileNotFoundException {
+	public void saveTempImgProfileImg(String name) throws FileNotFoundException {
 		File f = new File("./temp-storage/" + name);
 
 		if (f.exists()) {
@@ -110,6 +110,26 @@ public class StorageServiceImpl implements IStorageService {
 				String[] splitName = name.split("\\.");
 				this.deleteImgWithSameName(splitName[0], "./profile-img-storage/");
 				Files.copy(in, this.rootLocationProfileImg.resolve(f.getName()));
+				in.close();
+				f.delete();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	@Override
+	public void saveTempImgPostImg(String name, String idPost) throws FileNotFoundException {
+		File f = new File("./temp-storage/" + name);
+
+		if (f.exists()) {
+			InputStream in = new FileInputStream(f);
+			try {
+				String[] splitName = name.split("\\.");
+				this.deleteImgWithSameName(splitName[0] + idPost , "./post-img-storage/");
+				String [] fileNameSpliting = f.getName().split("\\.");
+				String nameFilePersist =  fileNameSpliting[0] + idPost + "." + fileNameSpliting[1];
+				Files.copy(in, this.rootLocationPostImg.resolve(nameFilePersist));
 				in.close();
 				f.delete();
 			} catch (IOException e) {
