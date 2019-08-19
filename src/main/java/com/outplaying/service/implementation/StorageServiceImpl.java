@@ -123,7 +123,7 @@ public class StorageServiceImpl implements IStorageService {
 		}
 	}
 	@Override
-	public void saveTempImgPostImg(String lastpictureName ,String newPictureName, String idPost) throws FileNotFoundException {
+	public String saveTempImgPostImg(String lastpictureName ,String newPictureName, String idPost) throws FileNotFoundException {
 		File f = new File(System.getProperty("java.io.tmpdir") + newPictureName);
 		if (f.exists()) {
 			InputStream in = new FileInputStream(f);
@@ -136,11 +136,13 @@ public class StorageServiceImpl implements IStorageService {
 				if(lastpictureName != "") {
 					this.deleteFile(lastpictureName , "./post-img-storage/");
 				}
+				return nameFilePersist;
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+		return null;
 	}
 
 	@Override

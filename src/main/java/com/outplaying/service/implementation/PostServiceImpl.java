@@ -98,16 +98,10 @@ public class PostServiceImpl implements IPostService {
 					post.setPostName(postDTO.getPostName());
 					post.setContentText(postDTO.getContentText());
 					try {
-						storageService.saveTempImgPostImg(post.getPicturesURL(),postDTO.getPicturesURL(),Long.toString(post.getIdPost()));
-						String [] nameSpliting = postDTO.getPicturesURL().split("\\.");
-						String fileName = "";
-						if(post.getPicturesURL() == "") {
-							fileName = nameSpliting[0] + post.getIdPost().toString() + "." + nameSpliting[1];
-						} else {
-							fileName = nameSpliting[0] +  post.getIdPost().toString() + "." + nameSpliting[1];
+						String fileName = storageService.saveTempImgPostImg(post.getPicturesURL(),postDTO.getPicturesURL(),Long.toString(post.getIdPost()));
+						if(fileName != null) {
+							post.setPicturesURL(fileName);
 						}
-						
-						post.setPicturesURL(fileName);
 						
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
