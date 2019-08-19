@@ -34,14 +34,14 @@ public class PostController {
 		return this.postService.findPostById(idPost);
 	}
 	
-	@GetMapping(value="/user/{idUser}")
-	public List<PostDTO> getByUserId(@PathVariable(value="idUser") Long idUser) {
-		return this.postService.getByUserId(idUser);
+	@GetMapping(value="/user")
+	public List<PostDTO> getByUserId() {
+		return this.postService.getByUserAuthenticated();
 	}
 	
-	@GetMapping(value="/admin/{idUser}")
-	public List<PostDTO> getByÚserId(@PathVariable(value="idUser")Long idUser) {
-		return this.postService.getByManageUserId(idUser);
+	@GetMapping(value="/managed")
+	public List<PostDTO> getByÚserId() {
+		return this.postService.getManagedPost();
 	}
 
 	@PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

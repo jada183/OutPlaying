@@ -7,7 +7,7 @@ INSERT INTO user_credentials(password, username, id_user) VALUES('$2a$10$DYAJD6f
 
 INSERT INTO post(content_text, date, likes, manage_date, picture, post_name, status, id_user, id_user_manager) VALUES('esto es el post de prueba inicial', '2019-05-03', '0', '2019-05-03', 'danilo1993Post1.jpg', 'post prueba', '2', '2', '1');
 INSERT INTO post(content_text, date, likes, manage_date, picture, post_name, status, id_user, id_user_manager) VALUES('esto es el post de prueba inicial', '2019-05-03', '0', '2019-05-03', 'danilo1993Post2.png', 'post prueba2', '1', '2', '1');
-
+INSERT INTO post(content_text, date, likes, manage_date, picture, post_name, status, id_user, id_user_manager) VALUES('esto es el post de prueba inicial', '2019-08-19', '0', '2019-08-19', 'jason1993Post3.png', 'post prueba 3', '1', '1', '1');
 
 
 INSERT INTO comment(content_text, likes, date, id_user, id_post) VALUES('comentario de prueba del primer post', '0', '2019-05-03', '2', '1');

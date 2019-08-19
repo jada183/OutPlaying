@@ -15,9 +15,9 @@ public interface IPostService {
 	
 	public List<PostDTO> getAll();
 	
-	public List<PostDTO> getByUserId(Long idUser);
+	public List<PostDTO> getByUserAuthenticated();
 	
-	public List<PostDTO> getByManageUserId(Long idUser);
+	public List<PostDTO> getManagedPost();
 	
 	public PostDTO addPost(PostDTO postDTO);
 	

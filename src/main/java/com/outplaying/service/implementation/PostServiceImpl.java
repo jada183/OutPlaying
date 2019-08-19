@@ -11,6 +11,8 @@ import javax.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.outplaying.dto.PostDTO;
@@ -38,6 +40,8 @@ public class PostServiceImpl implements IPostService {
 	@Autowired
 	private IStorageService storageService;
 
+	
+	
 	@Override
 	public PostDTO findPostById(Long id) {
 
@@ -56,17 +60,11 @@ public class PostServiceImpl implements IPostService {
 
 	@Override
 	public PostDTO addPost(PostDTO postDTO) {
-
-		// temporal para no tener que estar siempre autentificado para modificar post
-		// Post post = modelMapper.map(postDTO, Post.class);
-		// post.setLikes(0);
-		// post.setStatus(postDTO.getStatus());
-		// post.setDate(new Date());
-		// return modelMapper.map(postRepository.save(post), PostDTO.class);
-
-		// comprobar que el idUser del post es del usuario autentificado.
-		if (Validator.ValidateIfIdIsOfAuthenticatedUser(postDTO.getIdUser())) {
+		if (Validator.isAuthenticated()) {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			User user = userRepository.getOne(Long.parseLong(authentication.getName()));
 			Post post = modelMapper.map(postDTO, Post.class);
+			post.setUserIdUser(user);
 			post.setPicturesURL("");
 			post.setLikes(0);
 			post.setStatus(PostStatus.Pendiente);
@@ -215,10 +213,12 @@ public class PostServiceImpl implements IPostService {
 	}
 
 	@Override
-	public List<PostDTO> getByUserId(Long idUser) {
+	public List<PostDTO> getByUserAuthenticated() {
 
-		if (Validator.ValidateIfIdIsOfAuthenticatedUser(idUser)) {
+		if (Validator.isAuthenticated()) {
 			List<PostDTO> listDTO = new ArrayList<>();
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			Long idUser = Long.parseLong(authentication.getName());
 			User user = userRepository.getOne(idUser);
 			List<Post> listPost = postRepository.getPostByUser(user);
 			for (Post p : listPost) {
@@ -232,9 +232,11 @@ public class PostServiceImpl implements IPostService {
 	}
 
 	@Override
-	public List<PostDTO> getByManageUserId(Long idUser) {
-		if (Validator.ValidateIfIdIsOfAuthenticatedUser(idUser)) {
+	public List<PostDTO> getManagedPost() {
+		if (Validator.isAuthenticated()) {
 			List<PostDTO> listDTO = new ArrayList<>();
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			Long idUser = Long.parseLong(authentication.getName());
 			User user = userRepository.getOne(idUser);
 			List<Post> listPost = postRepository.getPostByUserManager(user);
 			for (Post p : listPost) {
