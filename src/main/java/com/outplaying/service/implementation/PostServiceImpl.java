@@ -72,7 +72,7 @@ public class PostServiceImpl implements IPostService {
 			post = postRepository.save(post);
 			if(postDTO.getPicturesURL() != "" && postDTO.getPicturesURL() != null) {
 				try {
-					storageService.saveTempImgPostImg(postDTO.getPicturesURL(),post.getIdPost().toString());
+					storageService.saveTempImgPostImg("",postDTO.getPicturesURL(), post.getIdPost().toString());
 					String [] nameSpliting = postDTO.getPicturesURL().split("\\.");
 					String fileName = nameSpliting[0] + post.getIdPost().toString() + "." + nameSpliting[1];
 					post.setPicturesURL(fileName);
@@ -98,13 +98,13 @@ public class PostServiceImpl implements IPostService {
 					post.setPostName(postDTO.getPostName());
 					post.setContentText(postDTO.getContentText());
 					try {
-						storageService.saveTempImgPostImg(postDTO.getPicturesURL(),post.getIdPost().toString());
+						storageService.saveTempImgPostImg(post.getPicturesURL(),postDTO.getPicturesURL(),Long.toString(post.getIdPost()));
 						String [] nameSpliting = postDTO.getPicturesURL().split("\\.");
 						String fileName = "";
 						if(post.getPicturesURL() == "") {
 							fileName = nameSpliting[0] + post.getIdPost().toString() + "." + nameSpliting[1];
 						} else {
-							fileName = nameSpliting[0] + "." + nameSpliting[1];
+							fileName = nameSpliting[0] +  post.getIdPost().toString() + "." + nameSpliting[1];
 						}
 						
 						post.setPicturesURL(fileName);

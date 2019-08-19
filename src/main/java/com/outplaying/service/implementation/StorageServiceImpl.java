@@ -3,6 +3,7 @@ package com.outplaying.service.implementation;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -29,7 +30,7 @@ import com.outplaying.utils.Validator;
 @Service
 public class StorageServiceImpl implements IStorageService {
 
-	private final Path rootLocationTem = Paths.get("temp-storage");
+	private final Path rootLocationTem = Paths.get(System.getProperty("java.io.tmpdir"));
 	private final Path rootLocationProfileImg = Paths.get("profile-img-storage");
 	private final Path rootLocationPostImg = Paths.get("post-img-storage");
 
@@ -55,6 +56,9 @@ public class StorageServiceImpl implements IStorageService {
 				String[] extension = file.getOriginalFilename().split("\\.");
 				String imageName = credential.getUsername() + "." + extension[1];
 				// metodo que elimina la imagen actual de perfil si se encuentra.
+//				File convFile = File.createTempFile("temp", ".xlsx");
+//		        FileOutputStream fos = new FileOutputStream(convFile); 
+				
 				this.deleteImgWithSameName(credential.getUsername(), "./temp-storage/");
 				Files.copy(file.getInputStream(), this.rootLocationTem.resolve(imageName));
 				return imageName;
@@ -119,19 +123,19 @@ public class StorageServiceImpl implements IStorageService {
 		}
 	}
 	@Override
-	public void saveTempImgPostImg(String name, String idPost) throws FileNotFoundException {
-		File f = new File("./temp-storage/" + name);
-
+	public void saveTempImgPostImg(String lastpictureName ,String newPictureName, String idPost) throws FileNotFoundException {
+		File f = new File(System.getProperty("java.io.tmpdir") + newPictureName);
 		if (f.exists()) {
 			InputStream in = new FileInputStream(f);
 			try {
-				String[] splitName = name.split("\\.");
-				this.deleteImgWithSameName(splitName[0] + idPost , "./post-img-storage/");
 				String [] fileNameSpliting = f.getName().split("\\.");
 				String nameFilePersist =  fileNameSpliting[0] + idPost + "." + fileNameSpliting[1];
 				Files.copy(in, this.rootLocationPostImg.resolve(nameFilePersist));
 				in.close();
 				f.delete();
+				if(lastpictureName != "") {
+					this.deleteFile(lastpictureName , "./post-img-storage/");
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -143,21 +147,19 @@ public class StorageServiceImpl implements IStorageService {
 	public String storeTemporaryPostImage(MultipartFile file) {
 		try {
 			if (Validator.isAuthenticated()) {
-				// tras comprobar si se esta autentificado, saco el valor de las credenciales
-				// obteniendo primero el usuario con el id de usuario
-				// que almace la clase authentication y a partir de este saco las credenciales
-				// para guardar el nombre del archivo con el userName
-				// que es unique.asi guardo una imagen de usuario para cada uno.
+				// uso los datos de las credenciales recuperados del token para dar nombre al fichero.
 				Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 				User user = userRepository.getOne(Long.parseLong(authentication.getName()));
 				Credential credential = credentialRepository.credentialByIdUSer(user);
 				// para obtener la extension de la imagen.
 				String[] extension = file.getOriginalFilename().split("\\.");
-				String imageName = credential.getUsername() + "Post." + extension[1];
-				// metodo que elimina la imagen actual de perfil si se encuentra.
-				this.deleteImgWithSameName(credential.getUsername(), "./temp-storage/");
-				Files.copy(file.getInputStream(), this.rootLocationTem.resolve(imageName));
-				return imageName;
+				File tempFile = File.createTempFile(credential.getUsername() + "Post" , "."+ extension[1]);
+				tempFile.deleteOnExit();
+				
+				FileOutputStream fos = new FileOutputStream(tempFile); 
+		        fos.write(file.getBytes());
+		        fos.close();
+				return tempFile.getName();
 			} else {
 				throw new HttpMessageNotReadableException("you cant add  this image",
 						new Throwable("you cant add  this image"));
@@ -176,6 +178,13 @@ public class StorageServiceImpl implements IStorageService {
 		}
 		if (f2.exists()) {
 			f2.delete();
+		}
+	}
+	
+	private void deleteFile(String name, String rootDirectory) { 
+		File f = new File(rootDirectory + name );
+		if (f.exists()) {
+			f.delete();
 		}
 	}
 

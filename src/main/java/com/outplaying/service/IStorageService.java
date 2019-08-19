@@ -15,7 +15,7 @@ public interface IStorageService {
 	
 	public void saveTempImgProfileImg (String name) throws FileNotFoundException;
 	
-	public void saveTempImgPostImg (String name,  String idPost) throws FileNotFoundException;
+	public void saveTempImgPostImg (String lastpictureName ,String newPictureName, String idPost) throws FileNotFoundException;
 	
 	public String storeTemporaryPostImage(MultipartFile file);
 	
