@@ -105,8 +105,8 @@ public class UserServiceImpl implements IUserService {
 				userBack.setEmail(userDTO.getEmail());
 				
 				try {
-					this.storageService.saveTempImgProfileImg(userDTO.getUrlImg());
-					userBack.setUrlImg(userDTO.getUrlImg());
+					String imgName = this.storageService.saveTempImgProfileImg(userBack.getUrlImg(), userDTO.getUrlImg());
+					userBack.setUrlImg(imgName);
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

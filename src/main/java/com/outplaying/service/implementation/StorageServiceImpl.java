@@ -30,7 +30,6 @@ import com.outplaying.utils.Validator;
 @Service
 public class StorageServiceImpl implements IStorageService {
 
-	private final Path rootLocationTem = Paths.get(System.getProperty("java.io.tmpdir"));
 	private final Path rootLocationProfileImg = Paths.get("profile-img-storage");
 	private final Path rootLocationPostImg = Paths.get("post-img-storage");
 
@@ -44,24 +43,26 @@ public class StorageServiceImpl implements IStorageService {
 	public String storeTemporaryProfileImage(MultipartFile file) {
 		try {
 			if (Validator.isAuthenticated()) {
-				// tras comprobar si se esta autentificado, saco el valor de las credenciales
-				// obteniendo primero el usuario con el id de usuario
-				// que almace la clase authentication y a partir de este saco las credenciales
-				// para guardar el nombre del archivo con el userName
-				// que es unique.asi guardo una imagen de usuario para cada uno.
+				// Saco el username a partir de la autenticacion de la cual puedo obtener el id de user y con este las credenciales.
 				Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 				User user = userRepository.getOne(Long.parseLong(authentication.getName()));
 				Credential credential = credentialRepository.credentialByIdUSer(user);
 				// para obtener la extension de la imagen.
 				String[] extension = file.getOriginalFilename().split("\\.");
-				String imageName = credential.getUsername() + "." + extension[1];
 				// metodo que elimina la imagen actual de perfil si se encuentra.
-//				File convFile = File.createTempFile("temp", ".xlsx");
-//		        FileOutputStream fos = new FileOutputStream(convFile); 
+				File tempFile = File.createTempFile(credential.getUsername(), "."+ extension[1] );
+				tempFile.deleteOnExit();
 				
-				this.deleteImgWithSameName(credential.getUsername(), "./temp-storage/");
-				Files.copy(file.getInputStream(), this.rootLocationTem.resolve(imageName));
-				return imageName;
+				FileOutputStream fos = new FileOutputStream(tempFile); 
+		        fos.write(file.getBytes());
+		        fos.close();
+				return tempFile.getName();
+//				this.deleteImgWithSameName(credential.getUsername(), "./temp-storage/");
+//				Files.copy(file.getInputStream(), this.rootLocationTem.resolve(imageName));
+//				return imageName;
+				
+				
+				
 			} else {
 				throw new HttpMessageNotReadableException("you cant add  this image",
 						new Throwable("you cant add  this image"));
@@ -105,22 +106,28 @@ public class StorageServiceImpl implements IStorageService {
 	}
 
 	@Override
-	public void saveTempImgProfileImg(String name) throws FileNotFoundException {
-		File f = new File("./temp-storage/" + name);
-
+	public String saveTempImgProfileImg(String lastpictureName ,String newPictureName) throws FileNotFoundException {
+		File f = new File(System.getProperty("java.io.tmpdir") + newPictureName);
 		if (f.exists()) {
 			InputStream in = new FileInputStream(f);
 			try {
-				String[] splitName = name.split("\\.");
-				this.deleteImgWithSameName(splitName[0], "./profile-img-storage/");
-				Files.copy(in, this.rootLocationProfileImg.resolve(f.getName()));
+				String [] fileNameSpliting = f.getName().split("\\.");
+				String nameFilePersist =  fileNameSpliting[0] +  "." + fileNameSpliting[1];
+				Files.copy(in, this.rootLocationProfileImg.resolve(nameFilePersist));
 				in.close();
 				f.delete();
+				if(lastpictureName != "") {
+					this.deleteFile(lastpictureName , "./profile-img-storage/");
+				}
+				return nameFilePersist;
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+		return null;
+		
+		
 	}
 	@Override
 	public String saveTempImgPostImg(String lastpictureName ,String newPictureName, String idPost) throws FileNotFoundException {
@@ -170,17 +177,6 @@ public class StorageServiceImpl implements IStorageService {
 			throw new RuntimeException("FAIL!");
 		}
 
-	}
-
-	private void deleteImgWithSameName(String name, String rootDirectory) {
-		File f = new File(rootDirectory + name + ".png");
-		File f2 = new File(rootDirectory + name + ".jpg");
-		if (f.exists()) {
-			f.delete();
-		}
-		if (f2.exists()) {
-			f2.delete();
-		}
 	}
 	
 	private void deleteFile(String name, String rootDirectory) { 

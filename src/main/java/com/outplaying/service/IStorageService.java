@@ -13,7 +13,7 @@ public interface IStorageService {
 	
 	public Resource loadFileProfileImg(String filename);
 	
-	public void saveTempImgProfileImg (String name) throws FileNotFoundException;
+	public String saveTempImgProfileImg (String lastpictureName ,String newPictureName) throws FileNotFoundException;
 	
 	public String saveTempImgPostImg (String lastpictureName ,String newPictureName, String idPost) throws FileNotFoundException;
 	
