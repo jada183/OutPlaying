@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.outplaying.dto.PostDTO;
+import com.outplaying.dto.PostListPaginatedDTO;
 import com.outplaying.dto.PostStatusUpdateDTO;
 
 
@@ -32,4 +33,6 @@ public interface IPostService {
 	public PostDTO updatePostByAdmin(PostDTO postDTO);
 	
 	public Integer deleteByAdmin(Long id);
+	
+	public PostListPaginatedDTO getApprovedPostPaginated(int page, int size);
 }

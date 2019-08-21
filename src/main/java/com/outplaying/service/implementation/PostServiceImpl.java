@@ -10,12 +10,17 @@ import javax.persistence.EntityNotFoundException;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.outplaying.dto.PostDTO;
+import com.outplaying.dto.PostListPaginatedDTO;
 import com.outplaying.dto.PostStatusUpdateDTO;
 import com.outplaying.enumerables.PostStatus;
 import com.outplaying.model.Post;
@@ -241,6 +246,25 @@ public class PostServiceImpl implements IPostService {
 			throw new HttpMessageNotReadableException("you cant get this post list",
 					new Throwable("you cant get this post list"));
 		}
+	}
+
+	@Override
+	public PostListPaginatedDTO getApprovedPostPaginated(int page, int size) {
+		Pageable sortedByDate = 
+				  PageRequest.of(page, size,Sort.by("date").descending());
+		
+		List<PostDTO> listPostDTO  = new ArrayList<>();
+		Page<Post> pagePost = this.postRepository.findByStatus(PostStatus.Posteado,sortedByDate);
+		List<Post> listPost = pagePost.getContent();
+		for (Post p : listPost) {
+			
+			listPostDTO.add(modelMapper.map(p, PostDTO.class));
+		}
+		PostListPaginatedDTO postListPaginatedDTO =  new PostListPaginatedDTO();
+		
+		postListPaginatedDTO.setListPost(listPostDTO);
+		postListPaginatedDTO.setNumberOfPages(pagePost.getTotalPages());
+		return postListPaginatedDTO;
 	}
 
 }

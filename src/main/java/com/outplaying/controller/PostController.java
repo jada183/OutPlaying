@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.outplaying.dto.PostDTO;
+import com.outplaying.dto.PostListPaginatedDTO;
 import com.outplaying.dto.PostStatusUpdateDTO;
 import com.outplaying.service.IPostService;
 
@@ -79,4 +81,10 @@ public class PostController {
 	public Integer deleteByAdmin(@PathVariable Long idPost) {
 		return this.postService.deleteByAdmin(idPost);
 	}
+	
+	@GetMapping(value="/paginated")
+	public PostListPaginatedDTO getPaginatedApproved(@RequestParam (value="page") int page, @RequestParam("size") int size) {
+		return this.postService.getApprovedPostPaginated(page, size);
+	}
+	
 }
