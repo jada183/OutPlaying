@@ -25,6 +25,7 @@ public interface IPostRepository extends JpaRepository<Post, Long> {
 	@Query("Select p from Post p where p.user =?1")
 	public List<Post> getPostByUser(User user);
 	
+	public Page<Post> findByUser(User user,Pageable pageable);
 
 	@Query("Select p from Post p where p.userManager =?1")
 	public List<Post> getPostByUserManager(User user);

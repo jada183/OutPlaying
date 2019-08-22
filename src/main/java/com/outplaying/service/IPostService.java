@@ -16,7 +16,7 @@ public interface IPostService {
 	
 	public List<PostDTO> getAll();
 	
-	public List<PostDTO> getByUserAuthenticated();
+	public PostListPaginatedDTO getByUserAuthenticated(int page, int size);
 	
 	public List<PostDTO> getManagedPost();
 	

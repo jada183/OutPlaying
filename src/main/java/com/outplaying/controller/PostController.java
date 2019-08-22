@@ -37,8 +37,8 @@ public class PostController {
 	}
 	
 	@GetMapping(value="/user")
-	public List<PostDTO> getByUserId() {
-		return this.postService.getByUserAuthenticated();
+	public PostListPaginatedDTO getByUserId(@RequestParam (value="page") int page, @RequestParam("size") int size) {
+		return this.postService.getByUserAuthenticated(page, size);
 	}
 	
 	@GetMapping(value="/managed")

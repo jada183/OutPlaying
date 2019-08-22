@@ -212,18 +212,26 @@ public class PostServiceImpl implements IPostService {
 	}
 
 	@Override
-	public List<PostDTO> getByUserAuthenticated() {
+	public PostListPaginatedDTO getByUserAuthenticated(int page, int size) {
 
 		if (Validator.isAuthenticated()) {
+			Pageable sortedByDate = 
+					  PageRequest.of(page, size,Sort.by("date").descending());
 			List<PostDTO> listDTO = new ArrayList<>();
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			Long idUser = Long.parseLong(authentication.getName());
 			User user = userRepository.getOne(idUser);
-			List<Post> listPost = postRepository.getPostByUser(user);
+			Page<Post> postPages= postRepository.findByUser(user, sortedByDate);
+			
+			List<Post> listPost = postPages.getContent();
+			
 			for (Post p : listPost) {
 				listDTO.add(modelMapper.map(p, PostDTO.class));
 			}
-			return listDTO;
+			PostListPaginatedDTO postListPaginatedDTO = new PostListPaginatedDTO();
+			postListPaginatedDTO.setListPost(listDTO);
+			postListPaginatedDTO.setNumberOfPages(postPages.getTotalPages());
+			return postListPaginatedDTO;
 		} else {
 			throw new HttpMessageNotReadableException("you cant get this post list",
 					new Throwable("you cant get this post list"));
