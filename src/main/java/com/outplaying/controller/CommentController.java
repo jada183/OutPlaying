@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.outplaying.dto.CommentDTO;
+import com.outplaying.dto.CommentListPaginated;
 import com.outplaying.service.ICommentService;
 
 @RestController
@@ -24,8 +26,8 @@ public class CommentController {
 	private ICommentService commentService;
 	
 	@GetMapping(value="/post/{idPost}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<CommentDTO> getListOfCommentsByPostId(@PathVariable Long idPost) { 
-		return this.commentService.getListByPostId(idPost);
+	public CommentListPaginated getListOfCommentsByPostId(@PathVariable Long idPost, @RequestParam (value="page") int page, @RequestParam("size") int size) { 
+		return this.commentService.getListByPostId(idPost, page, size);
 	}
 	
 	@GetMapping(value="/user/{idUser}", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -9,10 +9,15 @@ import javax.persistence.EntityNotFoundException;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
 
 import com.outplaying.dto.CommentDTO;
+import com.outplaying.dto.CommentListPaginated;
 import com.outplaying.model.Comment;
 import com.outplaying.model.Post;
 import com.outplaying.model.User;
@@ -37,16 +42,22 @@ public class ComentServiceImpl implements ICommentService {
 	private IUserRepository userRepository;
 
 	@Override
-	public List<CommentDTO> getListByPostId(Long idPost) {
+	public CommentListPaginated  getListByPostId(Long idPost, int page, int size) {
 		List<CommentDTO> commentsDTO = new ArrayList<>();
 		List<Comment> comentsBack = new ArrayList<>();
 		Optional<Post> postOp = postRepository.findById(idPost);
 		if (postOp.isPresent()) {
-			comentsBack = commentRepository.commentsByPost(postOp.get());
+			Pageable sortedByDate = 
+					  PageRequest.of(page, size,Sort.by("date").descending());
+			Page<Comment> pageComment = commentRepository.findByPost(postOp.get(), sortedByDate);
+			comentsBack = pageComment.getContent();
 			for (Comment c : comentsBack) {
 				commentsDTO.add(modelMapper.map(c, CommentDTO.class));
 			}
-			return commentsDTO;
+			CommentListPaginated commentListPaginated =  new CommentListPaginated();
+			commentListPaginated.setCommentList(commentsDTO);
+			commentListPaginated.setNumberOfPages(pageComment.getTotalPages());
+			return commentListPaginated;
 		} else {
 			throw new EntityNotFoundException("Post  with id " + idPost + " does not exists");
 		}

@@ -5,11 +5,12 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.outplaying.dto.CommentDTO;
+import com.outplaying.dto.CommentListPaginated;
 
 @Service
 public interface ICommentService {
 	
-	public List<CommentDTO> getListByPostId(Long idPost);
+	public CommentListPaginated getListByPostId(Long idPost, int page, int size);
 	
 	public List<CommentDTO> getListByUserId(Long idUser);
 	
