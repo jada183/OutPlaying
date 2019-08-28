@@ -14,6 +14,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.outplaying.dto.CommentDTO;
@@ -88,8 +90,11 @@ public class ComentServiceImpl implements ICommentService {
 
 	@Override
 	public CommentDTO createComment(CommentDTO commentDTO) {
-		if (Validator.ValidateIfIdIsOfAuthenticatedUser(commentDTO.getIdUser())) {
+		if (Validator.isAuthenticated()) {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			User user = userRepository.getOne(Long.parseLong(authentication.getName()));
 			Comment comment = modelMapper.map(commentDTO, Comment.class);
+			comment.setUser(user);
 			comment.setLikes(0);
 			comment.setDate(new Date());
 			return modelMapper.map(commentRepository.save(comment), CommentDTO.class);

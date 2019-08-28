@@ -12,10 +12,23 @@ INSERT INTO post(content_text, date, likes, manage_date, picture, post_name, sta
 INSERT INTO post(content_text, date, likes, manage_date, picture, post_name, status, id_user, id_user_manager) VALUES('esto es el post de prueba inicial aprobado2', '2019-08-08', '0', '2019-05-03', '', 'post prueba2', '0', '2', '1');
 INSERT INTO post(content_text, date, likes, manage_date, picture, post_name, status, id_user, id_user_manager) VALUES('esto es el post de prueba inicial aprobado3', '2019-08-21', '0', '2019-05-03', '', 'post prueba2', '0', '2', '1');
 INSERT INTO post(content_text, date, likes, manage_date, picture, post_name, status, id_user, id_user_manager) VALUES('esto es el post de prueba inicial aprobado4', '2019-08-18', '0', '2019-05-03', '', 'post prueba2', '0', '2', '1');
+INSERT INTO post(content_text, date, likes, manage_date, picture, post_name, status, id_user, id_user_manager) VALUES('esto es el post de prueba inicial aprobado4', '2019-08-18', '0', '2019-05-03', '', 'post prueba2', '0', '2', '1');
+INSERT INTO post(content_text, date, likes, manage_date, picture, post_name, status, id_user, id_user_manager) VALUES('esto es el post de prueba inicial aprobado4', '2019-08-18', '0', '2019-05-03', '', 'post prueba2', '0', '2', '1');
+INSERT INTO post(content_text, date, likes, manage_date, picture, post_name, status, id_user, id_user_manager) VALUES('esto es el post de prueba inicial aprobado4', '2019-08-18', '0', '2019-05-03', '', 'post prueba2', '0', '2', '1');
+INSERT INTO post(content_text, date, likes, manage_date, picture, post_name, status, id_user, id_user_manager) VALUES('esto es el post de prueba inicial aprobado4', '2019-08-18', '0', '2019-05-03', '', 'post prueba2', '0', '2', '1');
+INSERT INTO post(content_text, date, likes, manage_date, picture, post_name, status, id_user, id_user_manager) VALUES('esto es el post de prueba inicial aprobado4', '2019-08-18', '0', '2019-05-03', '', 'post prueba2', '0', '2', '1');
+INSERT INTO post(content_text, date, likes, manage_date, picture, post_name, status, id_user, id_user_manager) VALUES('esto es el post de prueba inicial aprobado4', '2019-08-18', '0', '2019-05-03', '', 'post prueba2', '0', '2', '1');
+INSERT INTO post(content_text, date, likes, manage_date, picture, post_name, status, id_user, id_user_manager) VALUES('esto es el post de prueba inicial aprobado4', '2019-08-18', '0', '2019-05-03', '', 'post prueba2', '0', '2', '1');
+INSERT INTO post(content_text, date, likes, manage_date, picture, post_name, status, id_user, id_user_manager) VALUES('esto es el post de prueba inicial aprobado4', '2019-08-18', '0', '2019-05-03', '', 'post prueba2', '0', '2', '1');
+INSERT INTO post(content_text, date, likes, manage_date, picture, post_name, status, id_user, id_user_manager) VALUES('esto es el post de prueba inicial aprobado4', '2019-08-18', '0', '2019-05-03', '', 'post prueba2', '0', '2', '1');
+INSERT INTO post(content_text, date, likes, manage_date, picture, post_name, status, id_user, id_user_manager) VALUES('esto es el post de prueba inicial aprobado4', '2019-08-18', '0', '2019-05-03', '', 'post prueba2', '0', '2', '1');
+INSERT INTO post(content_text, date, likes, manage_date, picture, post_name, status, id_user, id_user_manager) VALUES('esto es el post de prueba inicial aprobado4', '2019-08-18', '0', '2019-05-03', '', 'post prueba2', '0', '2', '1');
+INSERT INTO post(content_text, date, likes, manage_date, picture, post_name, status, id_user, id_user_manager) VALUES('esto es el post de prueba inicial aprobado4', '2019-08-18', '0', '2019-05-03', '', 'post prueba2', '0', '2', '1');
+INSERT INTO post(content_text, date, likes, manage_date, picture, post_name, status, id_user, id_user_manager) VALUES('esto es el post de prueba inicial aprobado4', '2019-08-18', '0', '2019-05-03', '', 'post prueba2', '0', '2', '1');
 INSERT INTO post(content_text, date, likes, manage_date, picture, post_name, status, id_user, id_user_manager) VALUES('esto es el post de prueba inicial aprobado5 user 1', '2019-08-19', '0', '2019-05-03', '', 'post user1 a', '0', '1', '1');
 
-INSERT INTO comment(content_text, likes, date, id_user, id_post) VALUES('comentario de prueba del primer post', '0', '2019-05-03', '2', '1');
-INSERT INTO comment(content_text, likes, date, id_user, id_post) VALUES('comentario de prueba del primer post', '0', '2019-05-03', '1', '2');
+INSERT INTO comment(content_text, likes, date, id_user, id_post) VALUES('comentario de prueba del primer post', '0', '2019-05-03', '2', '6');
+INSERT INTO comment(content_text, likes, date, id_user, id_post) VALUES('comentario de prueba del primer post', '0', '2019-05-03', '1', '5');
 
 INSERT INTO comment(content_text, likes, date, id_user, id_post) VALUES('comentario de prueba del un post aceptado ', '0', '2019-08-22', '1', '4');
 INSERT INTO comment(content_text, likes, date, id_user, id_post) VALUES('comentario de prueba del un post aceptado 2', '0', '2019-08-21', '2', '4');
