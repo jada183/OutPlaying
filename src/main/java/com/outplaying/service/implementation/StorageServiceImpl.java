@@ -179,12 +179,13 @@ public class StorageServiceImpl implements IStorageService {
 
 	}
 	
-	private void deleteFile(String name, String rootDirectory) { 
+	public void deleteFile(String name, String rootDirectory) { 
 		File f = new File(rootDirectory + name );
 		if (f.exists()) {
 			f.delete();
 		}
 	}
+
 
 	
 

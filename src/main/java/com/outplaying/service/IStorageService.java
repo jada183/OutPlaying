@@ -21,4 +21,6 @@ public interface IStorageService {
 	
 	public Resource loadFilePostImg(String filename);
 	
+	public void  deleteFile(String name, String rootDirectory);
+	
 }

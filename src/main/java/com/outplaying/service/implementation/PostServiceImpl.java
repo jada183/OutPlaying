@@ -150,7 +150,9 @@ public class PostServiceImpl implements IPostService {
 		Optional<Post> postOp = postRepository.findById(id);
 		if (postOp.isPresent()) {
 			if (Validator.ValidateIfIdIsOfAuthenticatedUser(postOp.get().getUser().getIdUser())) {
-				return postRepository.removeByIdPost(id);
+				postRepository.removeByIdPost(id);
+				storageService.deleteFile(postOp.get().getPicturesURL(), "./post-img-storage/");
+				return 1;
 			} else {
 				throw new HttpMessageNotReadableException("you cant delete this post",
 						new Throwable("you cant delete this post"));
@@ -213,10 +215,10 @@ public class PostServiceImpl implements IPostService {
 
 	@Override
 	public PostListPaginatedDTO getByUserAuthenticated(int page, int size) {
-
+		
 		if (Validator.isAuthenticated()) {
 			Pageable sortedByDate = 
-					  PageRequest.of(page, size,Sort.by("date").descending());
+					  PageRequest.of(page, size,Sort.by("date").descending().and(Sort.by("idPost")));
 			List<PostDTO> listDTO = new ArrayList<>();
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			Long idUser = Long.parseLong(authentication.getName());
@@ -228,6 +230,8 @@ public class PostServiceImpl implements IPostService {
 			for (Post p : listPost) {
 				listDTO.add(modelMapper.map(p, PostDTO.class));
 			}
+			
+			
 			PostListPaginatedDTO postListPaginatedDTO = new PostListPaginatedDTO();
 			postListPaginatedDTO.setListPost(listDTO);
 			postListPaginatedDTO.setNumberOfPages(postPages.getTotalPages());

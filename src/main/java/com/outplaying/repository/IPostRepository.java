@@ -1,5 +1,6 @@
 package com.outplaying.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -30,6 +31,9 @@ public interface IPostRepository extends JpaRepository<Post, Long> {
 	@Query("Select p from Post p where p.userManager =?1")
 	public List<Post> getPostByUserManager(User user);
 	
+	
+	@Query("select p from Post p where p.date <?1")
+	public List<Post> getPostOftwoYearsAgo(Date date);
 	
 	public Page<Post> findByStatus(PostStatus p, Pageable pageable );
 }
