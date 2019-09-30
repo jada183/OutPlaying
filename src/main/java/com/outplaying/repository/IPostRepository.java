@@ -32,8 +32,8 @@ public interface IPostRepository extends JpaRepository<Post, Long> {
 	public List<Post> getPostByUserManager(User user);
 	
 	
-	@Query("select p from Post p where p.date <?1")
-	public List<Post> getPostOftwoYearsAgo(Date date);
+	@Query("select p from Post p where p.date <?1 and p.status<>?2")
+	public List<Post> getPostOftwoYearsAgoAndStatusNotPosted(Date date, PostStatus status);
 	
 	public Page<Post> findByStatus(PostStatus p, Pageable pageable );
 }
