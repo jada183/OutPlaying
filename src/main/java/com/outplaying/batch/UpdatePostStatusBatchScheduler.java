@@ -15,13 +15,13 @@ import com.outplaying.repository.IPostRepository;
 @Component
 public class UpdatePostStatusBatchScheduler {
 	
-	 private static int  yearsOfAntiquityToDelete = 2;
+	 private static int  yearsOfAntiquityToDelete = -2;
 	 @Autowired
 	 private IPostRepository postRepository;
 	 
 	
-//	@Scheduled(cron ="0 0 0 * * *" )
-	@Scheduled(cron = "*/10 * * * * *")
+	@Scheduled(cron ="0 0 0 * * *" )
+//	@Scheduled(cron = "*/10 * * * * *")
 	public void schedule() {
 		Date date = new Date();
 		Calendar c = Calendar.getInstance();
